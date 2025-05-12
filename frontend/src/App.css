@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Geist', sans-serif;
+  line-height: 1.4;
+  background-color: var(--gray-100);
+}
+
+a {
+  display: inline-block;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+textarea {
+  max-width: 100%;
+}
+
+:root {
+  --border-radius: 5px;
+  --card-spacing: 1rem;
+
+  --purple-900: hsl(271, 81%, 46%);
+  --purple-700: hsl(271, 81%, 56%);
+  --purple-300: hsl(271, 81%, 86%);
+
+  --red-900: hsl(0, 84%, 40%);
+  --red-700: hsl(0, 84%, 60%);
+
+  --green-900: hsl(142, 76%, 26%);
+  --green-700: hsl(142, 76%, 36%);
+
+  --gray-700: hsl(0, 0%, 20%);
+  --gray-500: hsl(0, 0%, 50%);
+  --gray-300: hsl(0, 0%, 85%);
+  --gray-100: hsl(210, 40%, 96%);
+  --gray-50: hsl(0, 0%, 97%);
+
+  --white: hsl(0, 0%, 100%);
+  --black: hsl(0, 0%, 0%);
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--card-spacing);
+} 
+
+.btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--purple-700);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--purple-900);
+}
+
+.btn-outline {
+  border: 1px solid var(--gray-500);
+  background-color: var(--white);
+  color: var(--gray-700);
+}
+
+.btn-outline:hover {
+  background-color: var(--gray-100);
+}
+
+.btn-secondary {
+  background-color: var(--gray-100);
+  color: var(--black);
+}
+
+.btn-secondary:hover {
+  background-color: var(--gray-300);
+}
+
+.card {
+  padding: var(--card-spacing);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+}
+
+input,
+textarea {
+  padding: 0.5rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.badge-danger {
+  background-color: var(--red-700);
+  color: var(--white);
+}
+
+.badge-success {
+  background-color: var(--green-700);
+  color: var(--white);
+}
