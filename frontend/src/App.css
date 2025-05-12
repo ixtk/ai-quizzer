@@ -18,9 +18,19 @@ img {
   max-width: 100%;
 }
 
-input,
+input{
+  width: 100%;
+  font: inherit;
+}
+
 textarea {
   max-width: 100%;
+  font: inherit;
+}
+
+label{
+  display: block;
+  margin-bottom: 2px;
 }
 
 :root {
@@ -58,6 +68,7 @@ textarea {
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
+  font: inherit;
 }
 
 .btn-primary {
@@ -70,7 +81,7 @@ textarea {
 }
 
 .btn-outline {
-  border: 1px solid var(--gray-500);
+  border: 1px solid var(--gray-300);
   background-color: var(--white);
   color: var(--gray-700);
 }
@@ -104,7 +115,7 @@ textarea {
 
 .badge {
   font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 12px;
   display: inline-block;
 }

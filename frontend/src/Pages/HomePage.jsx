@@ -14,7 +14,7 @@ function HomePage() {
 
       <div className="card">
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Username</label> 
           <input type="text" id="username" />
         </div>
 
