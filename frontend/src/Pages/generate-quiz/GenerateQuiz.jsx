@@ -79,9 +79,12 @@ function GenerateQuiz() {
               </p>
             </div>
             <div className="option-div">
-              {q.options.map(opt => (
-                <button>
-                  <div className="opt-letter">A</div> {opt}
+              {q.options.map((opt, index) => (
+                <button key={index} className="opt-btn">
+                  <div className="opt-letter">
+                    {String.fromCharCode(65 + index)}
+                  </div>
+                  {opt}
                 </button>
               ))}
             </div>
