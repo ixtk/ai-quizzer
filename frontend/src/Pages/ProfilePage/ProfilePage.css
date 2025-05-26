@@ -25,146 +25,152 @@
   --font-weight-600: 600;
 }
 
-.home-link {
-  margin: var(--card-spacing);
+button {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  color: var(--purple-700);
 }
 
-.profile-page {
-  display: flex;
-  background-color: var(--gray-100);
-  border: none;
-}
-
-.container {
+.header {
   width: 100%;
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  margin: var(--card-spacing);
-}
-
-.lobby-subtitle {
-  color: var(--gray-500);
-}
-
-.game-code-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--green-300);
-  height: auto;
-}
-
-.game-code-label {
-  color: var(--green-900);
-  font-weight: var(--font-weight-600);
-}
-
-.game-code {
-  color: var(--green-900);
-}
-
-.copy-button {
-  color: var(--green-900);
-  font-weight: var(--font-weight-600);
-  display: flex;
-}
-
-.player-count {
-  display: flex;
-  font-weight: var(--font-weight-600);
-}
-
-.player-list {
-  width: 100%;
-}
-
-.player-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: var(--card-spacing);
+  background-color: var(--white);
 }
 
-.player-avatar {
+.AI-Quizzer {
+  margin-left: var(--card-spacing);
+  color: var(--purple-700);
+}
+
+.name-icon {
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  margin-right: var(--card-spacing);
+  color: var(--gray-500);
+}
+
+.icon {
+  margin-right: var(--card-spacing);
   width: 2.5rem;
   height: 2.5rem;
   background-color: var(--gray-100);
   border-radius: 5rem;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  margin-right: var(--card-spacing);
+  color: var(--gray-700);
 }
 
-.player-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.player-name {
-  font-weight: var(--font-weight-600);
-  margin-right: var(--card-spacing);
-}
-
-.host-badge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--purple-300);
-  color: var(--purple-900);
-  height: 1.25rem;
-  font-size: 0.75rem;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  margin-right: var(--card-spacing);
-}
-
-.ready-status {
-  display: flex;
-}
-
-.ready {
-  color: var(--green-700);
-}
-
-.not-ready {
-  color: var(--red-700);
-}
-
-.quiz-section {
+.profile {
   margin: var(--card-spacing);
 }
 
-.quiz-section p {
+/* Added for flex layout container */
+.profile-quizzes {
+  display: flex;
+  gap: var(--card-spacing);
+}
+
+/* Make profile take flexible width */
+.profile {
+  flex: 1;
+  height: 30rem;
+}
+
+.profile-heading {
+  font-size: 1.75rem;
+}
+
+.profile-text {
   color: var(--gray-500);
 }
 
-.quiz-input {
-  margin-bottom: var(--card-spacing);
-  width: 100%;
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.randomize-button {
-  width: 100%;
-}
-
-.start-game-button {
+.profile-icon {
   margin-top: var(--card-spacing);
+  width: 5rem;
+  height: 5rem;
+  background-color: var(--gray-100);
+  border-radius: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-700);
+}
+
+.profile-name {
+  font-weight: var(--font-weight-600);
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+.profile-date {
+  color: var(--gray-500);
+  margin-bottom: var(--card-spacing);
+}
+
+/* Quizzes Section */
+/* Max width & full width */
+.quizzes {
+  max-width: 960px;
   width: 100%;
+}
+
+/* Empty skeletons for the requested classes */
+.my-quizzes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quizzes-create-btn {
+  margin-right: var(--card-spacing);
+}
+
+.quiz {
+  margin-top: var(--card-spacing);
+  margin-right: var(--card-spacing);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-600);
+}
+
+.quiz-info {
+  display: flex;
+  margin: 0;
+}
+
+.quiz-info p {
+  margin-right: var(--card-spacing);
+  color: var(--gray-500);
+}
+
+.quiz-actions {
+  display: flex;
+}
+
+.quiz-actions button {
+  margin-right: var(--card-spacing);
 }
 
 @media (max-width: 768px) {
-  .container {
-    width: auto;
-  }
-
-  .profile-page {
+  .profile-quizzes {
     flex-direction: column;
   }
 }
