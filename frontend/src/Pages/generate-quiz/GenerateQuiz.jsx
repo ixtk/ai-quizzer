@@ -2,7 +2,8 @@ import React, { useState } from "react"
 import { Link } from "react-router"
 import { Save, RefreshCcw, Trash2, ArrowLeft } from "lucide-react"
 import "../../App.css"
-import questionsData from "./questions.json"
+import './GenerateQuiz.css'
+import questionsData from "../mock-data/questions.json"
 
 function GenerateQuiz() {
   const [topic, setTopic] = useState("")

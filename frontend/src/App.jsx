@@ -2,7 +2,7 @@ import "./App.css"
 import { Routes, Route } from "react-router"
 import HomePage from "./Pages/HomePage"
 import GenerateQuiz from "./Pages/generate-quiz/GenerateQuiz"
-import StartedQuiz from "./Pages/generate-quiz/StartedQuiz"
+import StartedQuiz from "./Pages/started-quiz/StartedQuiz"
 
 function App() {
   return (
@@ -15,6 +15,4 @@ function App() {
 }
 
 export default App
-
-
 
