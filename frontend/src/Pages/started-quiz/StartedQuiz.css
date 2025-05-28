@@ -100,7 +100,16 @@
     justify-content: space-between;
     align-items: center;
 }
+@media (max-width: 460px) {
+    .sq-footer {
+        display: flex;
+        flex-direction: column;
+    }
 
+    .sq-footer div {
+        margin-top: 1rem;
+    }
+}
 .sq-btn-next {
     font-size: 1rem;
 }
