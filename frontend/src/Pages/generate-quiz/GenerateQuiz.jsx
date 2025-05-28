@@ -3,7 +3,7 @@ import { Link } from "react-router"
 import { Save, RefreshCcw, Trash2, ArrowLeft } from "lucide-react"
 import "../../App.css"
 import './GenerateQuiz.css'
-import questionsData from "../mock-data/questions.json"
+import questionsData from "../../mock-data/questions.json"
 
 function GenerateQuiz() {
   const [topic, setTopic] = useState("")
@@ -63,6 +63,10 @@ function GenerateQuiz() {
         {questions.map(q => (
           <div className="card quiz-question">
             <div className="q-card-title">
+              <p className="question-text">
+                <strong>Question {q.id}:</strong> {q.text}
+              </p>
+
               <div className="icon-buttons">
                 <button className="btn btn-secondary icon-btn">
                   <RefreshCcw size={19} />
@@ -74,10 +78,6 @@ function GenerateQuiz() {
                   <Trash2 size={19} />
                 </button>
               </div>
-
-              <p className="question-text">
-                <strong>Question {q.id}:</strong> {q.text}
-              </p>
             </div>
             <div className="option-div">
               {q.options.map((opt, index) => (

@@ -70,28 +70,25 @@
 
 .quiz-question {
     margin-bottom: 1rem;
-    position: relative;
 }
 
 .icon-buttons {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
     gap: 0.5rem;
+    display: flex;
+    align-items: center;
 }
 
 .icon-btn {
     padding: 0.25rem;
     background: transparent;
+    display: flex;
+    align-items: center;
     border: none;
     cursor: pointer;
-    margin-top: 1rem;
-    margin-right: 1rem;
 }
 
 .question-text {
-    max-width: 80%;
+    max-width: 90%;
     margin: 0;
     font-weight: 500;
     color: var(--gray-700);
@@ -104,9 +101,9 @@
 }
 
 .q-card-title {
-    margin: 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: #f8e9f8;
     padding: 1.5rem;
     border-radius: 5px 5px 0 0;
@@ -130,10 +127,6 @@
     .quiz-header {
         display: flex;
         flex-direction: column;
-    }
-
-    .icon-buttons {
-        top: 0rem;
     }
 
     .quiz-header-right {
