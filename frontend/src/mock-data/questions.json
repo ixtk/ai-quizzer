@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "text": "What is the capital of France?",
+    "options": ["Berlin", "Madrid", "Paris", "Rome"],
+    "correct": "Paris"
+  },
+  {
+    "id": 2,
+    "text": "Which planet is known as the Red Planet?",
+    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "correct": "Mars"
+  },
+  {
+    "id": 3,
+    "text": "Who painted the Mona Lisa?",
+    "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "correct": "Leonardo da Vinci"
+  },
+  {
+    "id": 4,
+    "text": "What is the largest ocean on Earth?",
+    "options": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    "correct": "Pacific Ocean"
+  },
+  {
+    "id": 5,
+    "text": "Which element has the chemical symbol ‘O’?",
+    "options": ["O₂", "Oxygen", "Oxysium", "Opression"],
+    "correct": "O₂"
+  }
+]
