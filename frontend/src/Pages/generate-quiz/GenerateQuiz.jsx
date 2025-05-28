@@ -61,7 +61,7 @@ function GenerateQuiz() {
         </div>
 
         {questions.map(q => (
-          <div className="card quiz-question">
+          <div key={q.id} className="card quiz-question">
             <div className="q-card-title">
               <p className="question-text">
                 <strong>Question {q.id}:</strong> {q.text}
