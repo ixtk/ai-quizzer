@@ -1,30 +1,3 @@
-:root {
-  --border-radius: 5px;
-  --card-spacing: 1rem;
-
-  --purple-900: hsl(271, 81%, 46%);
-  --purple-700: hsl(271, 81%, 56%);
-  --purple-300: hsl(271, 81%, 86%);
-
-  --red-900: hsl(0, 84%, 40%);
-  --red-700: hsl(0, 84%, 60%);
-
-  --green-900: hsl(142, 76%, 26%);
-  --green-700: hsl(142, 76%, 36%);
-  --green-300: hsl(90, 57%, 97%);
-
-  --gray-700: hsl(0, 0%, 20%);
-  --gray-500: hsl(0, 0%, 50%);
-  --gray-300: hsl(0, 0%, 85%);
-  --gray-100: hsl(210, 40%, 96%);
-  --gray-50: hsl(0, 0%, 97%);
-
-  --white: hsl(0, 0%, 100%);
-  --black: hsl(0, 0%, 0%);
-
-  --font-weight-600: 600;
-}
-
 button {
   display: flex;
   align-items: center;
@@ -46,15 +19,14 @@ button {
 .name-icon {
   display: flex;
   align-items: center;
+  gap: var(--card-spacing);
 }
 
 .name {
-  margin-right: var(--card-spacing);
   color: var(--gray-500);
 }
 
 .icon {
-  margin-right: var(--card-spacing);
   width: 2.5rem;
   height: 2.5rem;
   background-color: var(--gray-100);
@@ -67,18 +39,15 @@ button {
 
 .profile {
   margin: var(--card-spacing);
+  min-width: 350px;
+  max-height: 23rem;
+  flex: 1;
 }
 
-/* Added for flex layout container */
 .profile-quizzes {
+  width: 100%;
   display: flex;
   gap: var(--card-spacing);
-}
-
-/* Make profile take flexible width */
-.profile {
-  flex: 1;
-  height: 30rem;
 }
 
 .profile-heading {
@@ -94,10 +63,10 @@ button {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  gap: var(--card-spacing);
 }
 
 .profile-icon {
-  margin-top: var(--card-spacing);
   width: 5rem;
   height: 5rem;
   background-color: var(--gray-100);
@@ -116,17 +85,12 @@ button {
 
 .profile-date {
   color: var(--gray-500);
-  margin-bottom: var(--card-spacing);
 }
 
-/* Quizzes Section */
-/* Max width & full width */
 .quizzes {
-  max-width: 960px;
   width: 100%;
 }
 
-/* Empty skeletons for the requested classes */
 .my-quizzes {
   display: flex;
   justify-content: space-between;
@@ -134,15 +98,15 @@ button {
 }
 
 .quizzes-create-btn {
-  margin-right: var(--card-spacing);
+  gap: var(--card-spacing);
 }
 
 .quiz {
   margin-top: var(--card-spacing);
-  margin-right: var(--card-spacing);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--card-spacing);
 }
 
 .quiz-name {
@@ -154,23 +118,40 @@ button {
 .quiz-info {
   display: flex;
   margin: 0;
+  gap: var(--card-spacing);
 }
 
 .quiz-info p {
-  margin-right: var(--card-spacing);
   color: var(--gray-500);
 }
 
 .quiz-actions {
   display: flex;
+  gap: var(--card-spacing);
 }
 
-.quiz-actions button {
-  margin-right: var(--card-spacing);
+@media (max-width: 1250px) {
+  .quiz {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1050px) {
   .profile-quizzes {
     flex-direction: column;
+  }
+  .quizzes {
+    width: 100%;
+  }
+}
+
+@media (max-width: 475px) {
+  .quiz {
+    align-items: center;
+  }
+
+  .btn-text {
+    display: none;
   }
 }

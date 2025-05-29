@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { ArrowLeft, Copy, Users, CircleCheckBig, Loader } from "lucide-react"
-import players from "./fake.json"
+import players from "../../mock_data/LobbyPage.json"
 import "./LobbyPage.css"
 
 function LobbyPage() {
@@ -11,7 +11,7 @@ function LobbyPage() {
         Back to Home
       </Link>
       <div className="lobby-page">
-        <div className="container card">
+        <div className="container card lobby-section">
           <h1 className="lobby-title">Game Lobby</h1>
           <p className="lobby-subtitle">Waiting for players to get ready</p>
 
@@ -55,7 +55,7 @@ function LobbyPage() {
           </div>
         </div>
 
-        <div className="quiz-section">
+        <div className="quiz-section container">
           <div className="quiz-badge card">
             <h1>Select Your Quiz</h1>
             <p>Choose a quiz to use in the game</p>
