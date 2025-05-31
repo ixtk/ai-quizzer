@@ -1,18 +1,20 @@
 import "./ProfilePage.css"
-import quizzes from "../../mock_data/ProfilePage.json"
+import quizzes from "../../mock_data/ProfileQuizzes.json"
 import { PlusCircle, Play, Pencil, Trash2 } from "lucide-react"
 
 function Quizzes() {
   console.log(quizzes)
   return (
     <>
-      <div className="header">
-        <h1 className="AI-Quizzer">AI Quizzer</h1>
-        <div className="name-icon">
-          <p className="name">demo</p>
-          <div className="icon">D</div>
+      <header>
+        <div className="header container">
+          <h1 className="AI-Quizzer">AI Quizzer</h1>
+          <div className="name-icon">
+            <p className="name">demo</p>
+            <div className="icon">D</div>
+          </div>
         </div>
-      </div>
+      </header>
       <div className="container">
         <div className="profile-quizzes">
           <div className="profile card">
@@ -41,7 +43,9 @@ function Quizzes() {
                   <div className="quiz-info">
                     <p>{quiz.number_of_questions} questions</p>
                     <p>Difficulty: {quiz.difficulty}</p>
-                    <p className="quiz-info-created">Created: {quiz.date_created}</p>
+                    <p className="quiz-info-created">
+                      Created: {quiz.date_created}
+                    </p>
                   </div>
                 </div>
                 <div className="quiz-actions">

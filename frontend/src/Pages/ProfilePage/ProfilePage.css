@@ -4,7 +4,6 @@ button {
 }
 
 .header {
-  padding: var(--card-spacing);
   width: 100%;
   display: flex;
   align-items: center;
@@ -83,6 +82,10 @@ button {
 
 .profile-date {
   color: var(--gray-500);
+}
+
+.quizzes {
+  flex: 2;
 }
 
 .my-quizzes {
