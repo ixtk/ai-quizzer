@@ -3,16 +3,20 @@ button {
   align-items: center;
 }
 
+header {
+  background-color: var(--white);
+}
+
 .header {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--white);
 }
 
 .AI-Quizzer {
   color: var(--purple-700);
+  margin: 0;
 }
 
 .name-icon {
