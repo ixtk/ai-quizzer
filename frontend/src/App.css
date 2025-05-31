@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-size: 1.2rem;
 }
 
 body {
@@ -96,6 +97,7 @@ label {
 .btn-secondary {
   background-color: var(--gray-100);
   color: var(--black);
+  margin-left: var(--card-spacing);
 }
 
 .btn-secondary:hover {
@@ -132,3 +134,4 @@ textarea {
   background-color: var(--green-700);
   color: var(--white);
 }
+
