@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  font-family: 'Geist', sans-serif;
+  font-family: "Geist", sans-serif;
   line-height: 1.4;
   background-color: var(--gray-100);
 }
@@ -18,7 +18,7 @@ img {
   max-width: 100%;
 }
 
-input{
+input {
   width: 100%;
   font: inherit;
 }
@@ -28,7 +28,7 @@ textarea {
   font: inherit;
 }
 
-label{
+label {
   display: block;
   margin-bottom: 2px;
 }
@@ -46,6 +46,7 @@ label{
 
   --green-900: hsl(142, 76%, 26%);
   --green-700: hsl(142, 76%, 36%);
+  --green-300: hsl(90, 57%, 97%);
 
   --gray-700: hsl(0, 0%, 20%);
   --gray-500: hsl(0, 0%, 50%);
@@ -55,13 +56,15 @@ label{
 
   --white: hsl(0, 0%, 100%);
   --black: hsl(0, 0%, 0%);
+
+  --font-weight-600: 600;
 }
 
 .container {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: var(--card-spacing);
-} 
+}
 
 .btn {
   border: none;

@@ -4,6 +4,7 @@ button {
 }
 
 .header {
+  padding: var(--card-spacing);
   width: 100%;
   display: flex;
   align-items: center;
@@ -12,7 +13,6 @@ button {
 }
 
 .AI-Quizzer {
-  margin-left: var(--card-spacing);
   color: var(--purple-700);
 }
 
@@ -38,8 +38,6 @@ button {
 }
 
 .profile {
-  margin: var(--card-spacing);
-  min-width: 350px;
   max-height: 23rem;
   flex: 1;
 }
@@ -87,10 +85,6 @@ button {
   color: var(--gray-500);
 }
 
-.quizzes {
-  width: 100%;
-}
-
 .my-quizzes {
   display: flex;
   justify-content: space-between;
@@ -105,7 +99,8 @@ button {
   margin-top: var(--card-spacing);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--card-spacing);
 }
 
@@ -117,12 +112,13 @@ button {
 
 .quiz-info {
   display: flex;
-  margin: 0;
+
   gap: var(--card-spacing);
 }
 
 .quiz-info p {
   color: var(--gray-500);
+  margin: 0;
 }
 
 .quiz-actions {
@@ -130,14 +126,11 @@ button {
   gap: var(--card-spacing);
 }
 
-@media (max-width: 1250px) {
-  .quiz {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.btn-text {
+  margin-left: var(--card-spacing);
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 800px) {
   .profile-quizzes {
     flex-direction: column;
   }
@@ -151,7 +144,36 @@ button {
     align-items: center;
   }
 
+  .quiz-actions {
+    width: 100%;
+  }
+
+  .quiz-actions button {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+  }
+
   .btn-text {
+    display: none;
+  }
+
+  .my-quizzes {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-quizzes button {
+    width: 100%;
+  }
+
+  .quiz-info-name {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .quiz-info-created {
     display: none;
   }
 }

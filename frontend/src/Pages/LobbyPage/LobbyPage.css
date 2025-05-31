@@ -1,5 +1,5 @@
 .home-link {
-  margin: var(--card-spacing);
+  margin-bottom: var(--card-spacing);
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -15,7 +15,6 @@
 
 .lobby-section {
   width: 100%;
-  margin: var(--card-spacing);
 }
 
 .lobby-subtitle {
