@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Alex",
+    "host": true,
+    "ready": true
+  },
+  {
+    "name": "Jordan",
+    "host": false,
+    "ready": true
+  },
+  {
+    "name": "Taylor",
+    "host": false,
+    "ready": false
+  },
+  {
+    "name": "Morgan",
+    "host": false,
+    "ready": true
+  },
+  {
+    "name": "Casey",
+    "host": false,
+    "ready": false
+  },
+  {
+    "name": "Riley",
+    "host": false,
+    "ready": true
+  },
+  {
+    "name": "Jamie",
+    "host": false,
+    "ready": false
+  },
+  {
+    "name": "Drew",
+    "host": false,
+    "ready": true
+  }
+]
