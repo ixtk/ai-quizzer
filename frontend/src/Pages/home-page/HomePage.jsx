@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import "../../App.css"
 import "./HomePage.css"
-import { LogOut, Grid, Users, Award } from "lucide-react"
+import {LogOut, Grid, Users, Award, Sparkles} from "lucide-react"
 
 
 const HomePage = () => {
@@ -27,12 +27,17 @@ const HomePage = () => {
                 className="btn btn-secondary google-btn"
                 onClick={handleLogin}
               >
+                <img
+                  src="/google-logo.webp" alt="Google" className="auth-icon"/>
                 Google
               </button>
+
               <button
                 className="btn btn-secondary fb-btn"
                 onClick={handleLogin}
               >
+                <img
+                  src="/facebook-logo.png" alt="Facebook" className="auth-icon"/>
                 Facebook
               </button>
             </>
@@ -42,6 +47,10 @@ const HomePage = () => {
 
       <main className="main-content">
         <div className="page-header">
+          <span className="top-btn">
+            <Sparkles />
+            The Ultimate Friend Quizz Game
+          </span>
           <h1 className="main-title">Can Your Friends Spot the Truth?</h1>
           <p className="subtitle">
             Create topic-based grids of facts and lies, then watch them guess
@@ -51,6 +60,7 @@ const HomePage = () => {
           {isLoggedIn && (
             <div className="actions">
               <button className="btn btn-primary host-game-btn">
+                <Users size={30} color="white" className="users-icon" />
                 Host a Game
               </button>
 
@@ -64,6 +74,10 @@ const HomePage = () => {
               </div>
             </div>
           )}
+          <p className="subtitle2">
+            Three simple steps to help you discover how well your friends really
+            know you
+          </p>
         </div>
 
         <div className="cards">
@@ -94,7 +108,7 @@ const HomePage = () => {
 
               <div className="card">
                 <div className="icon-wrapper">
-                  <Award size={32} color="white"  />
+                  <Award size={32} color="white" />
                 </div>
                 <h3 className="card-title">Play & Score</h3>
                 <p className="card-desc">
