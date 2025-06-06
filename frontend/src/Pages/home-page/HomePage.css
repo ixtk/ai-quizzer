@@ -1,6 +1,6 @@
 .header-section {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: var(--card-spacing);
 }
@@ -14,7 +14,9 @@
     align-items: center;
     justify-content: flex-end;
 }
-
+header{
+    background-color: transparent;
+}
 .google-btn {
     font-size: 1rem;
     font: inherit;
@@ -45,10 +47,20 @@
 }
 .logout-icon {
     cursor: pointer;
-    color: var(--gray-700);
+    color: var(--gray-500);
     transition: color 0.2s;
+    margin-left: 0.5rem;
 }
-
+.profile-txt{
+    color: var(--gray-500);
+    margin-right: 2rem;
+}
+.logout-div{
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
 .logout-icon:hover {
     color: var(--gray-500);
 }
@@ -67,6 +79,10 @@
     border-radius: 50px;
     background-color: var(--purple-300);
     color: var(--purple-700);
+    gap: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .main-title {
@@ -74,19 +90,26 @@
     color: var(--purple-900);
     margin-bottom: 0.5rem;
 }
-
+.main-title-black{
+    font-size: 3.5rem;
+    font-weight: 400;
+}
 .subtitle {
     color: var(--gray-700);
     font: inherit;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-bottom: var(--card-spacing);
 }
 .subtitle2 {
     color: var(--gray-700);
-    margin-top: 2rem;
     font: inherit;
+    font-size: 1.1rem;
 }
-
+.lower-title{
+    font: inherit;
+    font-size: 2rem;
+    font-weight: 500;
+}
 .actions {
     display: flex;
     justify-content: center;
@@ -102,19 +125,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: inherit;
 }
-.users-icon{
+.plus-icon{
     padding-right: 0.5rem;
 }
 
 .join-game {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
 }
 
 .room-input {
-    width: 160px;
+    width: 170px;
     padding: 0.5rem;
     border: 1px solid var(--gray-300);
     border-radius: var(--border-radius);
@@ -124,6 +147,10 @@
 .join-btn {
     font-size: 1rem;
     padding: 0.5rem 1rem;
+    background-color: var(--purple-700);
+    color: white;
+    font-weight: 400;
+    font-family: inherit;
 }
 
 .cards {
@@ -140,7 +167,9 @@
     border-radius:20px;
     height: 20rem;
     background-color: var(--white);
-    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .icon-wrapper {
@@ -149,13 +178,24 @@
     border-radius: 10px;
     padding: 0.5rem;
     max-width: 3.5rem;
+    width: 3.5rem;
+    max-height: 3.5rem;
     height: 3.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.wrapper-small{
+    max-width: 2.8rem;
+    width: 2.8rem;
+    max-height: 2.8rem;
+    height: 2.8rem;
+}
 .wrapper2{
     background-color: rgb(87, 130, 238);
+}
+.wrapper3{
+    background-color: rgb(21, 169, 21);
 }
 .step-number {
     position: absolute;
@@ -176,7 +216,9 @@
 .number2{
     background-color: rgb(87, 130, 238);
 }
-
+.number3 {
+    background-color: rgb(21, 169, 21);
+}
 .card-title {
     font-size: 1.2rem;
     font-weight: 600;

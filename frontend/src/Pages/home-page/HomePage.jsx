@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import "../../App.css"
 import "./HomePage.css"
-import {LogOut, Grid, Users, Award, Sparkles} from "lucide-react"
-
+import { LogOut, Users, Zap, Brain, Clock, Plus } from "lucide-react"
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -18,9 +17,22 @@ const HomePage = () => {
   return (
     <div className="container">
       <header className="header-section">
+        <div style={{display:"flex", alignItems:"center", gap:"0.3rem"}}>
+          <div className="icon-wrapper wrapper-small">
+            <Brain size={28} color="white" />
+          </div>
+          <p style={{color: "var(--purple-700)",fontSize: "1.2rem",fontWeight: "500"}}>
+            AI Multiplayer Quizzer
+          </p>
+        </div>
         <div className="header-actions">
           {isLoggedIn ? (
-            <LogOut className="logout-icon" size={24} onClick={handleLogout} />
+            <>
+              <span className="profile-txt">Profile</span>
+              <div className="logout-div" onClick={handleLogout}>
+                Logout <LogOut className="logout-icon" size={24} />
+              </div>
+            </>
           ) : (
             <>
               <button
@@ -28,7 +40,10 @@ const HomePage = () => {
                 onClick={handleLogin}
               >
                 <img
-                  src="/google-logo.webp" alt="Google" className="auth-icon"/>
+                  src="/google-logo.webp"
+                  alt="Google"
+                  className="auth-icon"
+                />
                 Google
               </button>
 
@@ -37,7 +52,10 @@ const HomePage = () => {
                 onClick={handleLogin}
               >
                 <img
-                  src="/facebook-logo.png" alt="Facebook" className="auth-icon"/>
+                  src="/facebook-logo.png"
+                  alt="Facebook"
+                  className="auth-icon"
+                />
                 Facebook
               </button>
             </>
@@ -48,19 +66,21 @@ const HomePage = () => {
       <main className="main-content">
         <div className="page-header">
           <span className="top-btn">
-            <Sparkles />
-            The Ultimate Friend Quizz Game
+            <Zap />
+            Powered by Gemini AI
           </span>
-          <h1 className="main-title">Can Your Friends Spot the Truth?</h1>
+          <h1 className="main-title">Create & Play </h1>
+          <span className="main-title-black">AI-Generated Quizzes </span>
           <p className="subtitle">
-            Create topic-based grids of facts and lies, then watch them guess
-            what's real.
+            Generate custom multiple-choice quizzes on any topic with Al, then
+            compete with friends in real-time. Test your knowledge, race against
+            the clock, and climb the leaderboard!
           </p>
 
           {isLoggedIn && (
             <div className="actions">
               <button className="btn btn-primary host-game-btn">
-                <Users size={30} color="white" className="users-icon" />
+                <Plus size={35} color="white" className="plus-icon" />
                 Host a Game
               </button>
 
@@ -74,10 +94,14 @@ const HomePage = () => {
               </div>
             </div>
           )}
-          <p className="subtitle2">
-            Three simple steps to help you discover how well your friends really
-            know you
-          </p>
+
+          <div style={{ marginTop: "2rem" }}>
+            <span className="lower-title">How It Works</span>
+            <p className="subtitle2">
+              Create, host, and play multiplayer quizzes in minutes with the
+              power of AI
+            </p>
+          </div>
         </div>
 
         <div className="cards">
@@ -85,13 +109,13 @@ const HomePage = () => {
             <>
               <div className="card">
                 <div className="icon-wrapper">
-                  <Grid size={32} color="white" />
+                  <Brain size={32} color="white" />
                 </div>
-                <h3 className="card-title">Create Topic-Based Grids</h3>
+                <h3 className="card-title">Generate Quiz</h3>
                 <p className="card-desc">
-                  Craft 9 statements about yourself on different topics – 8
-                  clever lies and 1 surprising truth. Make them believable to
-                  keep your friends guessing!
+                  Enter any topic and select a difficulty level. Gemini Al
+                  instantly creates 5-10 multiple-choice questions with 4 answer
+                  options each.
                 </p>
               </div>
 
@@ -99,21 +123,23 @@ const HomePage = () => {
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
-                <h3 className="card-title">Invite Friends</h3>
+                <h3 className="card-title">Host a Game</h3>
                 <p className="card-desc">
-                  Share your game code and watch as friends join your lobby. The
-                  more players, the more fun and surprising the results!
+                  Share your 6-digit game code with friends. They'll join your
+                  lobby where you can see everyone's status before starting the
+                  quiz.
                 </p>
               </div>
 
               <div className="card">
-                <div className="icon-wrapper">
-                  <Award size={32} color="white" />
+                <div className="icon-wrapper wrapper3">
+                  <Clock size={32} color="white" />
                 </div>
-                <h3 className="card-title">Play & Score</h3>
+                <h3 className="card-title">Play & Compete</h3>
                 <p className="card-desc">
-                  Guess the truth in each friend’s grid and earn points. Fool
-                  others with your lies to score even more!
+                  Race against a 15-second timer for each question. Score points
+                  for correct answers and see who tops the leaderboard when the
+                  quiz ends.
                 </p>
               </div>
             </>
@@ -121,14 +147,14 @@ const HomePage = () => {
             <>
               <div className="card">
                 <div className="icon-wrapper">
-                  <Grid size={32} color="white" />
+                  <Brain size={32} color="white" />
                 </div>
                 <div className="step-number">1</div>
-                <h3 className="card-title">Create Topic-Based Grids</h3>
+                <h3 className="card-title">Generate Quiz</h3>
                 <p className="card-desc">
-                  Craft 9 statements about yourself on different topics – 8
-                  clever lies and 1 surprising truth. Make them believable to
-                  keep your friends guessing!
+                  Enter any topic and select a difficulty level. Gemini Al
+                  instantly creates 5-10 multiple-choice questions with 4 answer
+                  options each
                 </p>
               </div>
 
@@ -137,22 +163,24 @@ const HomePage = () => {
                   <Users size={32} color="white" />
                 </div>
                 <div className="step-number number2">2</div>
-                <h3 className="card-title">Invite Friends</h3>
+                <h3 className="card-title">Host a Game</h3>
                 <p className="card-desc">
-                  Share your game code and watch as friends join your lobby. The
-                  more players, the more fun and surprising the results!
+                  Share your 6-digit game code with friends. They'll join your
+                  lobby where you can see everyone's status before starting the
+                  quiz.
                 </p>
               </div>
 
               <div className="card">
-                <div className="icon-wrapper">
-                  <Award size={32} color="white" />
+                <div className="icon-wrapper wrapper3">
+                  <Clock size={32} color="white" />
                 </div>
-                <div className="step-number">3</div>
-                <h3 className="card-title">Play & Score</h3>
+                <div className="step-number number3">3</div>
+                <h3 className="card-title">Play & Compete</h3>
                 <p className="card-desc">
-                  Guess the truth in each friend’s grid and earn points. Fool
-                  others with your lies to score even more!
+                  Race against a 15-second timer for each question. Score points
+                  for correct answers and see who tops the leaderboard when the
+                  quiz ends.
                 </p>
               </div>
             </>
