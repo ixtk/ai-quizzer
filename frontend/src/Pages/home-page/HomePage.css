@@ -1,0 +1,233 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--card-spacing);
+}
+.container{
+    margin: 0 auto;
+    padding: var(--card-spacing);
+    max-width: 1200px;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+header{
+    background-color: transparent;
+}
+.google-btn {
+    font-size: 1rem;
+    font: inherit;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    background-color: rgb(255, 98, 0);
+}
+.fb-btn{
+    font-size: 1rem;
+    font: inherit;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    background-color: rgb(51, 83, 163) ;
+}
+.auth-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 0.5rem;
+}
+.google-btn,
+.fb-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.logout-icon {
+    cursor: pointer;
+    color: var(--gray-500);
+    transition: color 0.2s;
+    margin-left: 0.5rem;
+}
+.profile-txt{
+    color: var(--gray-500);
+    margin-right: 2rem;
+}
+.logout-div{
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.logout-icon:hover {
+    color: var(--gray-500);
+}
+
+.main-content {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.page-header {
+    max-width: 80%;
+    margin: 0 auto 2rem;
+}
+.top-btn{
+    padding: 0.7rem;
+    border-radius: 50px;
+    background-color: var(--purple-300);
+    color: var(--purple-700);
+    gap: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-title {
+    font-size: 2.4rem;
+    color: var(--purple-900);
+    margin-bottom: 0.5rem;
+}
+.main-title-black{
+    font-size: 3.5rem;
+    font-weight: 400;
+}
+.subtitle {
+    color: var(--gray-700);
+    font: inherit;
+    font-size: 1.3rem;
+    margin-bottom: var(--card-spacing);
+}
+.subtitle2 {
+    color: var(--gray-700);
+    font: inherit;
+    font-size: 1.1rem;
+}
+.lower-title{
+    font: inherit;
+    font-size: 2rem;
+    font-weight: 500;
+}
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--card-spacing);
+    margin-top: var(--card-spacing);
+}
+
+.host-game-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inherit;
+}
+.plus-icon{
+    padding-right: 0.5rem;
+}
+
+.join-game {
+    display: flex;
+    align-items: center;
+}
+
+.room-input {
+    width: 170px;
+    padding: 0.5rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.join-btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--purple-700);
+    color: white;
+    font-weight: 400;
+    font-family: inherit;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--card-spacing);
+    margin-top: var(--card-spacing);
+}
+
+.card {
+    position: relative;
+    padding: var(--card-spacing);
+    border: 1px solid var(--gray-300);
+    border-radius:20px;
+    height: 20rem;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon-wrapper {
+    margin-bottom: 0.75rem;
+    background-color: var(--purple-700);
+    border-radius: 10px;
+    padding: 0.5rem;
+    max-width: 3.5rem;
+    width: 3.5rem;
+    max-height: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wrapper-small{
+    max-width: 2.8rem;
+    width: 2.8rem;
+    max-height: 2.8rem;
+    height: 2.8rem;
+}
+.wrapper2{
+    background-color: rgb(87, 130, 238);
+}
+.wrapper3{
+    background-color: rgb(21, 169, 21);
+}
+.step-number {
+    position: absolute;
+    top: -3%;
+    right: -3%;
+    width: 1.6rem;
+    height: 1.6rem;
+    background-color: var(--purple-700);
+    color: var(--white);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font: inherit;
+    padding: 0.5rem;
+}
+.number2{
+    background-color: rgb(87, 130, 238);
+}
+.number3 {
+    background-color: rgb(21, 169, 21);
+}
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+}
+
+.card-desc {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--gray-500);
+}
