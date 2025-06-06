@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { ArrowLeft, Copy, Users, CircleCheckBig, Loader } from "lucide-react"
-import players from "../../mock_data/LobbyUsers.json"
+import players from "../../mock-data/LobbyUsers.json"
 import "./LobbyPage.css"
 
 function LobbyPage() {

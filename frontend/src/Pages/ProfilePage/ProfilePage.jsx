@@ -1,5 +1,5 @@
 import "./ProfilePage.css"
-import quizzes from "../../mock_data/ProfileQuizzes.json"
+import quizzes from "../../mock-data/ProfileQuizzes.json"
 import { PlusCircle, Play, Pencil, Trash2 } from "lucide-react"
 
 function Quizzes() {
