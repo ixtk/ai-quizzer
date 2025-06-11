@@ -1,68 +1,12 @@
-import React, { useState } from "react"
 import "../../App.css"
 import "./HomePage.css"
-import { LogOut, Users, Zap, Brain, Clock, Plus } from "lucide-react"
+import { Users, Zap, Brain, Clock, Plus } from "lucide-react"
 
 const HomePage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const handleLogin = () => {
-    setIsLoggedIn(true)
-  }
-
-  const handleLogout = () => {
-    setIsLoggedIn(false)
-  }
+  const isLoggedIn = true
 
   return (
     <div className="container">
-      <header className="header-section">
-        <div style={{display:"flex", alignItems:"center", gap:"0.3rem"}}>
-          <div className="icon-wrapper wrapper-small">
-            <Brain size={28} color="white" />
-          </div>
-          <p style={{color: "var(--purple-700)",fontSize: "1.2rem",fontWeight: "500"}}>
-            AI Multiplayer Quizzer
-          </p>
-        </div>
-        <div className="header-actions">
-          {isLoggedIn ? (
-            <>
-              <span className="profile-txt">Profile</span>
-              <div className="logout-div" onClick={handleLogout}>
-                Logout <LogOut className="logout-icon" size={24} />
-              </div>
-            </>
-          ) : (
-            <>
-              <button
-                className="btn btn-secondary google-btn"
-                onClick={handleLogin}
-              >
-                <img
-                  src="/google-logo.webp"
-                  alt="Google"
-                  className="auth-icon"
-                />
-                Google
-              </button>
-
-              <button
-                className="btn btn-secondary fb-btn"
-                onClick={handleLogin}
-              >
-                <img
-                  src="/facebook-logo.png"
-                  alt="Facebook"
-                  className="auth-icon"
-                />
-                Facebook
-              </button>
-            </>
-          )}
-        </div>
-      </header>
-
       <main className="main-content">
         <div className="page-header">
           <span className="top-btn">
