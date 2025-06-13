@@ -85,7 +85,7 @@ function GenerateQuiz() {
                   <div className="opt-letter">
                     {String.fromCharCode(65 + index)}
                   </div>
-                  {opt}
+                  {opt.text}
                 </button>
               ))}
             </div>

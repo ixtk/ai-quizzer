@@ -1,0 +1,207 @@
+.leaderboard {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 2rem;
+    height: auto;
+}
+
+.leaderboard-header {
+    margin-bottom: 2rem;
+}
+.title {
+    font: inherit;
+    font-size: 2rem;
+}
+.trophy-div {
+    background-color: rgba(218, 182, 245, 0.413);
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.trophy-icon {
+    width: 80px;
+    height: 80px;
+    color: var(--purple-700);
+}
+
+.subtext {
+    color: var(--gray-500);
+    font-size: 1.3rem;
+}
+
+.leaderboard-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 500px) {
+    .leaderboard-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .tab-buttons{
+        flex-direction: column;
+    }
+}
+.tab-buttons {
+    display: flex;
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    padding: 0.3rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: var(--border-radius);
+}
+
+.tab-btn.active {
+    background-color: white;
+}
+
+.leaderboard-side {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circle {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.purple {
+    border: 15px solid #b47aff3a;
+    color: #7b4eff;
+    width: 10rem;
+    height: 10rem;
+}
+@media (max-width: 550px) {
+    .circle {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .purple {
+        width: 7rem;
+        height: 7rem;
+    }
+}
+.grey {
+    border: 15px solid  #6f6f6f3e;
+    color: #6f6f6f;
+}
+
+.orange {
+    border: 15px solid #f5cb8c56;
+    color: #f57c00;
+}
+
+.name {
+    font-weight: bold;
+    color: black;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.points {
+    color: #555;
+}
+
+.winner {
+    margin-top: 1rem;
+    font-size: 14px;
+    background-color: #a26dfd4b;
+    color: #a26dfd;
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+.Alex{
+    color: #6f6f6f ;
+    font-size: 1.5rem;
+}
+.You{
+    color: #7b4eff;
+    font-size: 1.5rem;
+}
+.Taylor{
+    color: #f57c00;
+    font-size: 1.5rem;
+}
+
+.quiz-container {
+    width: 1000px;
+    border-radius: var(--border-radius);
+    font: inherit;
+    background-color: var(--gray-100);
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    margin-top: 2rem;
+}
+
+.question-block {
+  padding: 0 1rem 0 1rem;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.option-card {
+    position: relative;
+    background: #f3f4f6;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    height: 4rem;
+}
+
+.option-card.correct {
+    background-color: #d1fae5;
+}
+
+.check-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #10b981;
+}
+
+.selected-by {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 4px;
+}

@@ -5,6 +5,7 @@ import ProfilePage from "./Pages/ProfilePage/ProfilePage"
 import GenerateQuiz from "./Pages/generate-quiz/GenerateQuiz"
 import StartedQuiz from "./Pages/started-quiz/StartedQuiz"
 import HomePage from "./Pages/home-page/HomePage"
+import LeaderBoard from "./Pages/leader-board-page/LeaderBoard"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/Profile" element={<ProfilePage />} />
       <Route path="/generateQuiz" element={<GenerateQuiz />} />
       <Route path="/startedQuiz" element={<StartedQuiz />} />
+      <Route path="/LeaderBoard" element={<LeaderBoard />} />
     </Routes>
   )
 }
