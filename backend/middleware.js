@@ -2,7 +2,8 @@ import admin from "firebase-admin";
 
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.applicationDefault(), 
+    credential: admin.credential.applicationDefault(),
+    projectId: "ai-quizzer-b98f6",
   });
 }
 

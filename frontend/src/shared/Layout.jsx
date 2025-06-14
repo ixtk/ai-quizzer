@@ -16,11 +16,11 @@ const facebookProvider = new FacebookAuthProvider()
 
 function Layout() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userInfo, setUserInfo] = useState(null)
 
   const handleLogin = async provider => {
     try {
       const result = await signInWithPopup(auth, provider)
-      console.log(`${provider.providerId} user:`, result.user)
       setIsLoggedIn(true)
     } catch (error) {
       console.error(`${provider.providerId} login error:`, error)
@@ -31,6 +31,7 @@ function Layout() {
     try {
       await signOut(auth)
       setIsLoggedIn(false)
+      setUserInfo(null)
     } catch (error) {
       console.error("Logout error:", error)
     }
@@ -40,6 +41,12 @@ function Layout() {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       if (user) {
         setIsLoggedIn(true)
+        setUserInfo({
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          email: user.email,
+          uid: user.uid
+        })
         const token = await user.getIdToken()
         axiosInstance.defaults.headers.common[
           "Authorization"
@@ -47,6 +54,7 @@ function Layout() {
         await axiosInstance.post("/users", { firebaseId: user.uid })
       } else {
         setIsLoggedIn(false)
+        setUserInfo(null)
         delete axiosInstance.defaults.headers.common["Authorization"]
       }
     })
@@ -74,7 +82,10 @@ function Layout() {
         <div className="header-actions">
           {isLoggedIn ? (
             <>
-              <span className="profile-txt">Profile</span>
+              {userInfo?.photoURL && <img src={userInfo.photoURL} />}
+              <span className="profile-txt">
+                {userInfo?.displayName || "Profile"}
+              </span>
               <div className="logout-div" onClick={handleLogout}>
                 Logout <LogOut className="logout-icon" size={24} />
               </div>

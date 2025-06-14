@@ -2,13 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import { User } from "./models/User.js";
-import { verifyAuth } from "./middleware/verifyAuth.js";
+import { verifyAuth } from "./middleware.js";
 
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: "http://localhost:5173",
   })
 );
 app.use(express.json());
@@ -24,6 +24,7 @@ mongoose
 app.get("/hello-world", (req, res) => {
   res.json({ message: "Hello World" });
 });
+
 
 app.post("/users", verifyAuth, async (req, res) => {
   const firebaseId = req.user.uid;
