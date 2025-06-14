@@ -48,39 +48,39 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="cards">
+        <div className="how-it-works-cards">
           {isLoggedIn ? (
             <>
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
-                <h3 className="card-title">Generate Quiz</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Generate Quiz</h3>
+                <p className="how-it-works-card-desc">
                   Enter any topic and select a difficulty level. Gemini Al
                   instantly creates 5-10 multiple-choice questions with 4 answer
                   options each.
                 </p>
               </div>
 
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
-                <h3 className="card-title">Host a Game</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Host a Game</h3>
+                <p className="how-it-works-card-desc">
                   Share your 6-digit game code with friends. They'll join your
                   lobby where you can see everyone's status before starting the
                   quiz.
                 </p>
               </div>
 
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
-                <h3 className="card-title">Play & Compete</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Play & Compete</h3>
+                <p className="how-it-works-card-desc">
                   Race against a 15-second timer for each question. Score points
                   for correct answers and see who tops the leaderboard when the
                   quiz ends.
@@ -89,39 +89,39 @@ const HomePage = () => {
             </>
           ) : (
             <>
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
                 <div className="step-number">1</div>
-                <h3 className="card-title">Generate Quiz</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Generate Quiz</h3>
+                <p className="how-it-works-card-desc">
                   Enter any topic and select a difficulty level. Gemini Al
                   instantly creates 5-10 multiple-choice questions with 4 answer
                   options each
                 </p>
               </div>
 
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
                 <div className="step-number number2">2</div>
-                <h3 className="card-title">Host a Game</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Host a Game</h3>
+                <p className="how-it-works-card-desc">
                   Share your 6-digit game code with friends. They'll join your
                   lobby where you can see everyone's status before starting the
                   quiz.
                 </p>
               </div>
 
-              <div className="card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
                 <div className="step-number number3">3</div>
-                <h3 className="card-title">Play & Compete</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Play & Compete</h3>
+                <p className="how-it-works-card-desc">
                   Race against a 15-second timer for each question. Score points
                   for correct answers and see who tops the leaderboard when the
                   quiz ends.

@@ -1,3 +1,4 @@
+import "./Layout.css"
 import { useEffect, useState } from "react"
 import { Outlet } from "react-router"
 import { Brain, LogOut } from "lucide-react"
@@ -21,7 +22,24 @@ function Layout() {
   const handleLogin = async provider => {
     try {
       const result = await signInWithPopup(auth, provider)
+      const user = result.user
       setIsLoggedIn(true)
+      setUserInfo({
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        email: user.email,
+        uid: user.uid
+      })
+
+      try {
+        const token = await user.getIdToken()
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${token}`
+        await axiosInstance.post("/users", { firebaseId: user.uid })
+      } catch (error) {
+        console.error("Token retrieval or user registration error:", error)
+      }
     } catch (error) {
       console.error(`${provider.providerId} login error:`, error)
     }
@@ -32,6 +50,7 @@ function Layout() {
       await signOut(auth)
       setIsLoggedIn(false)
       setUserInfo(null)
+      delete axiosInstance.defaults.headers.common["Authorization"]
     } catch (error) {
       console.error("Logout error:", error)
     }
@@ -47,11 +66,15 @@ function Layout() {
           email: user.email,
           uid: user.uid
         })
-        const token = await user.getIdToken()
-        axiosInstance.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${token}`
-        await axiosInstance.post("/users", { firebaseId: user.uid })
+
+        try {
+          const token = await user.getIdToken()
+          axiosInstance.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${token}`
+        } catch (error) {
+          console.error("Token retrieval error:", error)
+        }
       } else {
         setIsLoggedIn(false)
         setUserInfo(null)
@@ -64,7 +87,7 @@ function Layout() {
 
   return (
     <>
-      <header className="header-section">
+      <header className="header-section container">
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
           <div className="icon-wrapper wrapper-small">
             <Brain size={28} color="white" />
@@ -79,10 +102,22 @@ function Layout() {
             AI Multiplayer Quizzer
           </p>
         </div>
+
         <div className="header-actions">
           {isLoggedIn ? (
             <>
-              {userInfo?.photoURL && <img src={userInfo.photoURL} />}
+              {userInfo?.photoURL && (
+                <img
+                  src={userInfo.photoURL}
+                  alt="User avatar"
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    objectFit: "cover"
+                  }}
+                />
+              )}
               <span className="profile-txt">
                 {userInfo?.displayName || "Profile"}
               </span>

@@ -6,15 +6,6 @@ function Quizzes() {
   console.log(quizzes)
   return (
     <>
-      <header>
-        <div className="header container">
-          <h1 className="AI-Quizzer">AI Quizzer</h1>
-          <div className="name-icon">
-            <p className="name">demo</p>
-            <div className="icon">D</div>
-          </div>
-        </div>
-      </header>
       <div className="container">
         <div className="profile-quizzes">
           <div className="profile card">
