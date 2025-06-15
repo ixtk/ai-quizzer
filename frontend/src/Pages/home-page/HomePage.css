@@ -160,7 +160,7 @@ header{
     margin-top: var(--card-spacing);
 }
 
-.card {
+.hp-card {
     position: relative;
     padding: var(--card-spacing);
     border: 1px solid var(--gray-300);

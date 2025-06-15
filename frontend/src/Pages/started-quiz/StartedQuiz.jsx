@@ -47,7 +47,7 @@ function StartedQuiz() {
                 <div className="sq-opt-letter">
                   {String.fromCharCode(65 + i)}
                 </div>
-                <span>{opt}</span>
+                <span>{opt.text}</span>
               </button>
             ))}
           </div>
@@ -56,7 +56,7 @@ function StartedQuiz() {
           <button className="score-btn btn-outline">
             Score: <span className="score-count">0</span>
           </button>
-          <div>
+          <div className="btn-div">
             <button
               className="btn btn-outline sq-btn-next"
               onClick={handleNext}

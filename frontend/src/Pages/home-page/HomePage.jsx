@@ -17,11 +17,17 @@ const HomePage = () => {
   return (
     <div className="container">
       <header className="header-section">
-        <div style={{display:"flex", alignItems:"center", gap:"0.3rem"}}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
           <div className="icon-wrapper wrapper-small">
             <Brain size={28} color="white" />
           </div>
-          <p style={{color: "var(--purple-700)",fontSize: "1.2rem",fontWeight: "500"}}>
+          <p
+            style={{
+              color: "var(--purple-700)",
+              fontSize: "1.2rem",
+              fontWeight: "500"
+            }}
+          >
             AI Multiplayer Quizzer
           </p>
         </div>
@@ -107,7 +113,7 @@ const HomePage = () => {
         <div className="cards">
           {isLoggedIn ? (
             <>
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
@@ -119,7 +125,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
@@ -131,7 +137,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
@@ -145,7 +151,7 @@ const HomePage = () => {
             </>
           ) : (
             <>
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
@@ -158,7 +164,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
@@ -171,7 +177,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              <div className="card">
+              <div className="card hp-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
