@@ -1,9 +1,14 @@
 import "../../App.css"
 import "./HomePage.css"
 import { Users, Zap, Brain, Clock, Plus } from "lucide-react"
+import { useContext } from "react"
+import { AuthContext } from "../../lib/AuthContext"
 
 const HomePage = () => {
-  const isLoggedIn = true
+  const { user, isLoading } = useContext(AuthContext)
+  const isLoggedIn = Boolean(user)
+
+  if (isLoading) return null
 
   return (
     <div className="container">
@@ -16,7 +21,7 @@ const HomePage = () => {
           <h1 className="main-title">Create & Play </h1>
           <span className="main-title-black">AI-Generated Quizzes </span>
           <p className="subtitle">
-            Generate custom multiple-choice quizzes on any topic with Al, then
+            Generate custom multiple-choice quizzes on any topic with AI, then
             compete with friends in real-time. Test your knowledge, race against
             the clock, and climb the leaderboard!
           </p>
@@ -27,7 +32,6 @@ const HomePage = () => {
                 <Plus size={35} color="white" className="plus-icon" />
                 Host a Game
               </button>
-
               <div className="join-game">
                 <input
                   type="text"
@@ -57,8 +61,8 @@ const HomePage = () => {
                 </div>
                 <h3 className="how-it-works-card-title">Generate Quiz</h3>
                 <p className="how-it-works-card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
                   options each.
                 </p>
               </div>
@@ -96,9 +100,9 @@ const HomePage = () => {
                 <div className="step-number">1</div>
                 <h3 className="how-it-works-card-title">Generate Quiz</h3>
                 <p className="how-it-works-card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
-                  options each
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
+                  options each.
                 </p>
               </div>
 
