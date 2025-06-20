@@ -12,8 +12,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="/Lobby" element={<LobbyPage />} />
-        <Route path="/Profile" element={<ProfilePage />} />
+        <Route path="/lobby/:roomCode" element={<LobbyPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generateQuiz" element={<GenerateQuiz />} />
         <Route path="/startedQuiz" element={<StartedQuiz />} />
       </Route>

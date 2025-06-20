@@ -3,12 +3,55 @@ import "./HomePage.css"
 import { Users, Zap, Brain, Clock, Plus } from "lucide-react"
 import { useContext } from "react"
 import { AuthContext } from "../../lib/AuthContext"
-
+import { useNavigate } from "react-router"
+import { socket } from "../../lib/socket"
+import axiosInstance from "../../lib/axiosInstance"
+import { useState } from "react"
 const HomePage = () => {
   const { user, isLoading } = useContext(AuthContext)
   const isLoggedIn = Boolean(user)
+  const navigate = useNavigate()
+  const [roomCodeInput, setRoomCodeInput] = useState("")
 
   if (isLoading) return null
+
+  const handleHostGame = async () => {
+    try {
+      if (socket.connected) {
+        socket.disconnect()
+      }
+
+      const res = await axiosInstance.post("/create-room")
+      const roomCode = res.data.roomCode
+
+      socket.auth = { username: user.username }
+
+      socket.connect()
+
+      socket.once("connect", () => {
+        socket.emit("host-join-room", { roomCode })
+        navigate(`/lobby/${roomCode}`)
+      })
+    } catch (err) {
+      console.error("Failed to host game:", err)
+    }
+  }
+
+  const handleJoinGame = () => {
+    if (!roomCodeInput) return
+
+    if (socket.connected) {
+      socket.disconnect()
+    }
+
+    socket.auth = { username: user.username }
+    socket.connect()
+
+    socket.once("connect", () => {
+      socket.emit("join-room", { roomCode: roomCodeInput })
+      navigate(`/lobby/${roomCodeInput}`)
+    })
+  }
 
   return (
     <div className="container">
@@ -28,7 +71,10 @@ const HomePage = () => {
 
           {isLoggedIn && (
             <div className="actions">
-              <button className="btn btn-primary host-game-btn">
+              <button
+                className="btn btn-primary host-game-btn"
+                onClick={handleHostGame}
+              >
                 <Plus size={35} color="white" className="plus-icon" />
                 Host a Game
               </button>
@@ -37,8 +83,15 @@ const HomePage = () => {
                   type="text"
                   className="room-input"
                   placeholder="Enter room code"
+                  value={roomCodeInput}
+                  onChange={e => setRoomCodeInput(e.target.value.toUpperCase())}
                 />
-                <button className="btn btn-outline join-btn">Join</button>
+                <button
+                  className="btn btn-outline join-btn"
+                  onClick={handleJoinGame}
+                >
+                  Join
+                </button>
               </div>
             </div>
           )}
