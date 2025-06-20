@@ -73,6 +73,8 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
+  console.log(`✅ [CONNECTED] ${socket.username} (${socket.id})`);
+
   socket.on("host-join-room", ({ roomCode }) => {
     const room = rooms[roomCode];
     if (!room) return;
@@ -83,7 +85,12 @@ io.on("connection", (socket) => {
       ready: false,
     };
 
-    room.users.push(hostPlayer);
+    const alreadyExists = room.users.some((u) => u.sId === socket.id);
+    if (!alreadyExists) {
+      room.users.push(hostPlayer);
+      console.log(`👑 [HOST JOINED] ${socket.username} in ${roomCode}`);
+    }
+
     room.host = socket.id;
     socket.join(roomCode);
 
@@ -103,7 +110,12 @@ io.on("connection", (socket) => {
       ready: false,
     };
 
-    room.users.push(newPlayer);
+    const alreadyExists = room.users.some((u) => u.sId === socket.id);
+    if (!alreadyExists) {
+      room.users.push(newPlayer);
+      console.log(`🙋 [PLAYER JOINED] ${socket.username} in ${roomCode}`);
+    }
+
     socket.join(roomCode);
 
     io.to(roomCode).emit("user-joined", {
@@ -119,6 +131,11 @@ io.on("connection", (socket) => {
     const player = room.users.find((u) => u.sId === socket.id);
     if (player) {
       player.ready = !player.ready;
+      console.log(
+        `🔄 [TOGGLE READY] ${player.username} is now ${
+          player.ready ? "READY" : "NOT READY"
+        } in ${roomCode}`
+      );
     }
 
     io.to(roomCode).emit("ready-updated", {
@@ -127,18 +144,23 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    console.log(`⛔ [DISCONNECTED] ${socket.username} (${socket.id})`);
     for (const roomCode in rooms) {
       const room = rooms[roomCode];
       const idx = room.users.findIndex((u) => u.sId === socket.id);
       if (idx !== -1) {
+        const username = room.users[idx].username;
         room.users.splice(idx, 1);
+        console.log(`📤 [REMOVED] ${username} left ${roomCode}`);
 
         if (room.host === socket.id) {
           room.host = room.users[0]?.sId || null;
+          console.log(`👑 [HOST CHANGED] New host: ${room.host || "none"}`);
         }
 
         if (room.users.length === 0) {
           delete rooms[roomCode];
+          console.log(`🗑️ [ROOM DELETED] ${roomCode}`);
         } else {
           io.to(roomCode).emit("user-disconnected", {
             users: room.users,
@@ -151,5 +173,5 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+  console.log("🚀 Server running on http://localhost:3000");
 });

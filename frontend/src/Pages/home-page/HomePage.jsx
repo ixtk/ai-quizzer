@@ -16,42 +16,20 @@ const HomePage = () => {
   if (isLoading) return null
 
   const handleHostGame = async () => {
-    try {
-      if (socket.connected) {
-        socket.disconnect()
-      }
+    const res = await axiosInstance.post("/create-room")
+    const roomCode = res.data.roomCode
 
-      const res = await axiosInstance.post("/create-room")
-      const roomCode = res.data.roomCode
-
-      socket.auth = { username: user.username }
-
-      socket.connect()
-
-      socket.once("connect", () => {
-        socket.emit("host-join-room", { roomCode })
-        navigate(`/lobby/${roomCode}`)
-      })
-    } catch (err) {
-      console.error("Failed to host game:", err)
-    }
+    localStorage.setItem("isHost", "true")
+    navigate(`/lobby/${roomCode}`)
   }
 
   const handleJoinGame = () => {
     if (!roomCodeInput) return
-
-    if (socket.connected) {
-      socket.disconnect()
-    }
-
-    socket.auth = { username: user.username }
-    socket.connect()
-
-    socket.once("connect", () => {
-      socket.emit("join-room", { roomCode: roomCodeInput })
-      navigate(`/lobby/${roomCodeInput}`)
-    })
+    localStorage.setItem("isHost", "false")
+    navigate(`/lobby/${roomCodeInput}`)
   }
+  
+  
 
   return (
     <div className="container">

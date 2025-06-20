@@ -6,7 +6,7 @@ import { socket } from "../../lib/socket"
 import { AuthContext } from "../../lib/AuthContext"
 
 function LobbyPage() {
-  const { user } = useContext(AuthContext)
+  const { user, isLoading } = useContext(AuthContext)
   const { roomCode } = useParams()
   const [players, setPlayers] = useState([])
   const [selectedQuiz, setSelectedQuiz] = useState("")
@@ -20,6 +20,43 @@ function LobbyPage() {
     { id: "quiz4", name: "Sports" }
   ]
 
+  // Prevent crashing on refresh or unauthenticated access
+  useEffect(() => {
+    if (!user?.username) return
+
+    const isHost = localStorage.getItem("isHost") === "true"
+
+    const joinRoom = () => {
+      if (isHost) {
+        socket.emit("host-join-room", { roomCode })
+      } else {
+        socket.emit("join-room", { roomCode })
+      }
+    }
+
+    if (!socket.connected) {
+      socket.auth = { username: user.username }
+      socket.connect()
+      socket.once("connect", joinRoom)
+    } else {
+      joinRoom()
+    }
+
+    return () => {
+      localStorage.removeItem("isHost")
+    }
+  }, [roomCode, user?.username])
+
+  // Track your own socket ID reliably
+  useEffect(() => {
+    if (socket.connected) {
+      setMySocketId(socket.id)
+    } else {
+      socket.once("connect", () => setMySocketId(socket.id))
+    }
+  }, [])
+
+  // Listen for room events
   useEffect(() => {
     socket.on("user-joined", ({ users, hostId }) => {
       setPlayers(users)
@@ -40,16 +77,6 @@ function LobbyPage() {
       socket.off("user-disconnected")
       socket.off("ready-updated")
     }
-  }, [roomCode])
-
-  useEffect(() => {
-    if (socket.connected) {
-      setMySocketId(socket.id)
-    } else {
-      socket.once("connect", () => {
-        setMySocketId(socket.id)
-      })
-    }
   }, [])
 
   const handleToggleReady = () => {
@@ -59,6 +86,10 @@ function LobbyPage() {
   const handleRandomize = () => {
     const random = quizOptions[Math.floor(Math.random() * quizOptions.length)]
     setSelectedQuiz(random.id)
+  }
+
+  if (isLoading || !user) {
+    return <div className="container">Loading...</div>
   }
 
   return (

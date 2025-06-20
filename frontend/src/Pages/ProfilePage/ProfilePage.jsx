@@ -12,26 +12,13 @@ function ProfilePage() {
   const { user } = useContext(AuthContext)
 
   const handleHostGame = async () => {
-    try {
-      if (socket.connected) {
-        socket.disconnect()
-      }
+    const res = await axiosInstance.post("/create-room")
+    const roomCode = res.data.roomCode
 
-      const res = await axiosInstance.post("/create-room")
-      const roomCode = res.data.roomCode
-
-      socket.auth = { username: user.username }
-
-      socket.connect()
-
-      socket.once("connect", () => {
-        socket.emit("host-join-room", { roomCode })
-        navigate(`/lobby/${roomCode}`)
-      })
-    } catch (err) {
-      console.error("Failed to host game:", err)
-    }
+    localStorage.setItem("isHost", "true")
+    navigate(`/lobby/${roomCode}`)
   }
+  
 
   return (
     <div className="container">
