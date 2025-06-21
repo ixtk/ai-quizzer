@@ -19,13 +19,11 @@ const HomePage = () => {
     const res = await axiosInstance.post("/create-room")
     const roomCode = res.data.roomCode
 
-    localStorage.setItem("isHost", "true")
     navigate(`/lobby/${roomCode}`)
   }
 
   const handleJoinGame = () => {
     if (!roomCodeInput) return
-    localStorage.setItem("isHost", "false")
     navigate(`/lobby/${roomCodeInput}`)
   }
   

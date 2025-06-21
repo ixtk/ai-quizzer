@@ -20,34 +20,23 @@ function LobbyPage() {
     { id: "quiz4", name: "Sports" }
   ]
 
-  // Prevent crashing on refresh or unauthenticated access
   useEffect(() => {
     if (!user?.username) return
 
-    const isHost = localStorage.getItem("isHost") === "true"
-
-    const joinRoom = () => {
-      if (isHost) {
-        socket.emit("host-join-room", { roomCode })
-      } else {
-        socket.emit("join-room", { roomCode })
-      }
+    const join = () => {
+      socket.emit("join-room", { roomCode })
     }
+
+    socket.auth = { username: user.username }
 
     if (!socket.connected) {
-      socket.auth = { username: user.username }
       socket.connect()
-      socket.once("connect", joinRoom)
+      socket.once("connect", join)
     } else {
-      joinRoom()
-    }
-
-    return () => {
-      localStorage.removeItem("isHost")
+      join()
     }
   }, [roomCode, user?.username])
 
-  // Track your own socket ID reliably
   useEffect(() => {
     if (socket.connected) {
       setMySocketId(socket.id)
@@ -56,7 +45,6 @@ function LobbyPage() {
     }
   }, [])
 
-  // Listen for room events
   useEffect(() => {
     socket.on("user-joined", ({ users, hostId }) => {
       setPlayers(users)
@@ -87,6 +75,9 @@ function LobbyPage() {
     const random = quizOptions[Math.floor(Math.random() * quizOptions.length)]
     setSelectedQuiz(random.id)
   }
+
+  const allReady =
+    players.length > 0 && players.every(player => player.ready === true)
 
   if (isLoading || !user) {
     return <div className="container">Loading...</div>
@@ -184,9 +175,19 @@ function LobbyPage() {
           </div>
 
           {mySocketId === hostId && (
-            <button className="start-game-button btn btn-primary">
-              Start Game
-            </button>
+            <>
+              <button
+                className="start-game-button btn btn-primary"
+                disabled={!allReady}
+              >
+                Start Game
+              </button>
+              {!allReady && (
+                <p className="helper-text">
+                  All players must be ready to start the game
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -15,7 +15,6 @@ function ProfilePage() {
     const res = await axiosInstance.post("/create-room")
     const roomCode = res.data.roomCode
 
-    localStorage.setItem("isHost", "true")
     navigate(`/lobby/${roomCode}`)
   }
   
