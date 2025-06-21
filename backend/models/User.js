@@ -6,6 +6,13 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  quizzes: [
+    {
+      text: String,
+      options: [String],
+      correctAnswer: String,
+    },
+  ],
 });
 
 export const User = mongoose.model("User", userSchema);

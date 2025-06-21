@@ -2,19 +2,77 @@ import React, { useState } from "react"
 import { Link } from "react-router"
 import { Save, RefreshCcw, Trash2, ArrowLeft } from "lucide-react"
 import "../../App.css"
-import './GenerateQuiz.css'
-import questionsData from "../../mock-data/questions.json"
+import "./GenerateQuiz.css"
+// import questionsData from "../../mock-data/questions.json"
+import { getAuth } from "firebase/auth"
 
 function GenerateQuiz() {
   const [topic, setTopic] = useState("")
   const [difficulty, setDifficulty] = useState("Easy")
-  const [questions, setQuestions] = useState(questionsData)
+  const [questions, setQuestions] = useState([])
 
   const handleDelete = id => {
     const updatedQuestions = questions.filter(q => q.id !== id)
     setQuestions(updatedQuestions)
   }
+const generateQuiz = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/generate-quiz", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        topic,
+        difficulty,
+        numberOfQuestions: 5
+      })
+    })
 
+    const data = await res.json()
+    if (Array.isArray(data)) {
+      const withIds = data.map((q, index) => ({ id: index + 1, ...q }))
+      setQuestions(withIds)
+    } else {
+      alert("Failed to parse quiz from response")
+    }
+  } catch (error) {
+    console.error("Error generating quiz:", error)
+    alert("Something went wrong while generating the quiz.")
+  }
+}
+
+const saveQuiz = async () => {
+  try {
+    const auth = getAuth()
+    const user = auth.currentUser
+    if (!user) {
+      alert("You must be logged in to save the quiz.")
+      return
+    }
+
+    const token = await user.getIdToken()
+
+    const res = await fetch("http://localhost:3000/save-quiz", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ quiz: questions })
+    })
+
+    if (res.ok) {
+      alert("Quiz saved successfully!")
+      window.location.href = "/profile" 
+    } else {
+      alert("Failed to save quiz")
+    }
+  } catch (err) {
+    console.error("Save error:", err)
+    alert("Error saving quiz")
+  }
+}
   return (
     <div className="container">
       <Link to="/" className="back-link">
@@ -45,7 +103,9 @@ function GenerateQuiz() {
             </label>
           ))}
         </div>
-        <button className="btn btn-primary generate-btn">Generate Quiz</button>
+        <button className="btn btn-primary generate-btn" onClick={generateQuiz}>
+          Generate Quiz
+        </button>
       </div>
 
       <div className="card">
@@ -53,7 +113,7 @@ function GenerateQuiz() {
           <h3 style={{ fontSize: "1.5rem" }}>Generated Quiz</h3>
           <div className="quiz-header-right">
             <button className="topic-btn">The Birthday Plan</button>
-            <button className="btn btn-primary save-btn">
+            <button className="btn btn-primary save-btn" onClick={saveQuiz}>
               <Save size={19} className="icon" />
               Save Quiz
             </button>
