@@ -106,50 +106,58 @@ function Layout() {
         <div className="header-actions">
           {isLoggedIn ? (
             <>
-              {userInfo?.photoURL && (
-                <img
-                  src={userInfo.photoURL}
-                  alt="User avatar"
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    objectFit: "cover"
-                  }}
-                />
-              )}
-              <span className="profile-txt">
-                {userInfo?.displayName || "Profile"}
-              </span>
-              <div className="logout-div" onClick={handleLogout}>
-                Logout <LogOut className="logout-icon" size={24} />
+              <div className="header-div">
+                <div style={{display:"flex"}}>
+                  {userInfo?.photoURL && (
+                    <img
+                      src={userInfo.photoURL}
+                      alt="User avatar"
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        marginRight:"1rem"
+                      }}
+                    />
+                  )}
+
+                  <span className="profile-txt">
+                    {userInfo?.displayName || "Profile"}
+                  </span>
+                </div>
+                <div className="logout-div" onClick={handleLogout}>
+                  Logout <LogOut className="logout-icon" size={24} />
+                </div>
               </div>
             </>
           ) : (
             <>
-              <button
-                className="btn btn-secondary google-btn"
-                onClick={() => handleLogin(googleProvider)}
-              >
-                <img
-                  src="/google-logo.webp"
-                  alt="Google"
-                  className="auth-icon"
-                />
-                Google
-              </button>
+              <div className="header-div">
+                <button
+                  className="btn btn-secondary google-btn"
+                  onClick={() => handleLogin(googleProvider)}
+                >
+                  <img
+                    src="/google-logo.webp"
+                    alt="Google"
+                    className="auth-icon"
+                  />
+                  Google
+                </button>
 
-              <button
-                className="btn btn-secondary fb-btn"
-                onClick={() => handleLogin(facebookProvider)}
-              >
-                <img
-                  src="/facebook-logo.png"
-                  alt="Facebook"
-                  className="auth-icon"
-                />
-                Facebook
-              </button>
+                <button
+                  className="btn btn-secondary fb-btn"
+                  onClick={() => handleLogin(facebookProvider)}
+                >
+                  <img
+                    src="/facebook-logo.png"
+                    alt="Facebook"
+                    className="auth-icon"
+                  />
+                  Facebook
+                </button>
+              </div>
             </>
           )}
         </div>
