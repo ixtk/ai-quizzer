@@ -77,23 +77,23 @@ function Layout() {
           {isLoggedIn ? (
             <>
               <div className="header-div">
-                <div style={{display:"flex"}}>
-                  {userInfo?.photoURL && (
+                <div style={{ display: "flex" }}>
+                  {user?.photoURL && (
                     <img
-                      src={userInfo.photoURL}
+                      src={user.photoURL}
                       alt="User avatar"
                       style={{
                         width: "32px",
                         height: "32px",
                         borderRadius: "50%",
                         objectFit: "cover",
-                        marginRight:"1rem"
+                        marginRight: "1rem"
                       }}
                     />
                   )}
 
                   <span className="profile-txt">
-                    {userInfo?.displayName || "Profile"}
+                    {user?.displayName || "Profile"}
                   </span>
                 </div>
                 <div className="logout-div" onClick={handleLogout}>
