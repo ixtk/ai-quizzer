@@ -100,11 +100,13 @@
     justify-content: space-between;
     align-items: center;
 }
-.btn-div{
+
+.btn-div, .sq-footer div{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 @media (max-width: 460px) {
     .sq-footer {
         display: flex;
@@ -116,6 +118,8 @@
     }
     .sq-footer div {
         margin-top: 1rem;
+        flex-direction: column;
+        gap: 1rem;
     }
 }
 .sq-btn-next {

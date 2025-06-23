@@ -6,6 +6,19 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  quizzes: [
+    {
+      title: String,
+      createdAt: { type: Date, default: Date.now },
+      questions: [
+        {
+          text: String,
+          options: [String],
+          correctAnswer: String,
+        },
+      ],
+    },
+  ],
 });
 
 export const User = mongoose.model("User", userSchema);
