@@ -3,45 +3,8 @@ button {
   align-items: center;
 }
 
-header {
-  background-color: var(--white);
-}
-
-.header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.AI-Quizzer {
-  color: var(--purple-700);
-  margin: 0;
-}
-
-.name-icon {
-  display: flex;
-  align-items: center;
-  gap: var(--card-spacing);
-}
-
-.name {
-  color: var(--gray-500);
-}
-
-.icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: var(--gray-100);
-  border-radius: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gray-700);
-}
-
 .profile {
-  max-height: 23rem;
+  max-height: 25rem;
   flex: 1;
 }
 

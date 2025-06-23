@@ -1,74 +1,36 @@
-import React, { useState } from "react"
 import "../../App.css"
 import "./HomePage.css"
-import { LogOut, Users, Zap, Brain, Clock, Plus } from "lucide-react"
-
+import { Users, Zap, Brain, Clock, Plus } from "lucide-react"
+import { useContext } from "react"
+import { AuthContext } from "../../lib/AuthContext"
+import { useNavigate } from "react-router"
+import { socket } from "../../lib/socket"
+import axiosInstance from "../../lib/axiosInstance"
+import { useState } from "react"
 const HomePage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { user, isLoading } = useContext(AuthContext)
+  const isLoggedIn = Boolean(user)
+  const navigate = useNavigate()
+  const [roomCodeInput, setRoomCodeInput] = useState("")
 
-  const handleLogin = () => {
-    setIsLoggedIn(true)
+  if (isLoading) return null
+
+  const handleHostGame = async () => {
+    const res = await axiosInstance.post("/create-room")
+    const roomCode = res.data.roomCode
+
+    navigate(`/lobby/${roomCode}`)
   }
 
-  const handleLogout = () => {
-    setIsLoggedIn(false)
+  const handleJoinGame = () => {
+    if (!roomCodeInput) return
+    navigate(`/lobby/${roomCodeInput}`)
   }
+  
+  
 
   return (
     <div className="container">
-      <header className="header-section">
-        <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-          <div className="icon-wrapper wrapper-small">
-            <Brain size={28} color="white" />
-          </div>
-          <p
-            style={{
-              color: "var(--purple-700)",
-              fontSize: "1.2rem",
-              fontWeight: "500"
-            }}
-          >
-            AI Multiplayer Quizzer
-          </p>
-        </div>
-        <div className="header-actions">
-          {isLoggedIn ? (
-            <>
-              <span className="profile-txt">Profile</span>
-              <div className="logout-div" onClick={handleLogout}>
-                Logout <LogOut className="logout-icon" size={24} />
-              </div>
-            </>
-          ) : (
-            <>
-              <button
-                className="btn btn-secondary google-btn"
-                onClick={handleLogin}
-              >
-                <img
-                  src="/google-logo.webp"
-                  alt="Google"
-                  className="auth-icon"
-                />
-                Google
-              </button>
-
-              <button
-                className="btn btn-secondary fb-btn"
-                onClick={handleLogin}
-              >
-                <img
-                  src="/facebook-logo.png"
-                  alt="Facebook"
-                  className="auth-icon"
-                />
-                Facebook
-              </button>
-            </>
-          )}
-        </div>
-      </header>
-
       <main className="main-content">
         <div className="page-header">
           <span className="top-btn">
@@ -78,25 +40,34 @@ const HomePage = () => {
           <h1 className="main-title">Create & Play </h1>
           <span className="main-title-black">AI-Generated Quizzes </span>
           <p className="subtitle">
-            Generate custom multiple-choice quizzes on any topic with Al, then
+            Generate custom multiple-choice quizzes on any topic with AI, then
             compete with friends in real-time. Test your knowledge, race against
             the clock, and climb the leaderboard!
           </p>
 
           {isLoggedIn && (
             <div className="actions">
-              <button className="btn btn-primary host-game-btn">
+              <button
+                className="btn btn-primary host-game-btn"
+                onClick={handleHostGame}
+              >
                 <Plus size={35} color="white" className="plus-icon" />
                 Host a Game
               </button>
-
               <div className="join-game">
                 <input
                   type="text"
                   className="room-input"
                   placeholder="Enter room code"
+                  value={roomCodeInput}
+                  onChange={e => setRoomCodeInput(e.target.value.toUpperCase())}
                 />
-                <button className="btn btn-outline join-btn">Join</button>
+                <button
+                  className="btn btn-outline join-btn"
+                  onClick={handleJoinGame}
+                >
+                  Join
+                </button>
               </div>
             </div>
           )}
@@ -110,39 +81,39 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="cards">
+        <div className="how-it-works-cards">
           {isLoggedIn ? (
             <>
-              <div className="card hp-card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
-                <h3 className="card-title">Generate Quiz</h3>
-                <p className="card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
+                <h3 className="how-it-works-card-title">Generate Quiz</h3>
+                <p className="how-it-works-card-desc">
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
                   options each.
                 </p>
               </div>
 
-              <div className="card hp-card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
-                <h3 className="card-title">Host a Game</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Host a Game</h3>
+                <p className="how-it-works-card-desc">
                   Share your 6-digit game code with friends. They'll join your
                   lobby where you can see everyone's status before starting the
                   quiz.
                 </p>
               </div>
 
-              <div className="card hp-card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
-                <h3 className="card-title">Play & Compete</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Play & Compete</h3>
+                <p className="how-it-works-card-desc">
                   Race against a 15-second timer for each question. Score points
                   for correct answers and see who tops the leaderboard when the
                   quiz ends.
@@ -151,39 +122,39 @@ const HomePage = () => {
             </>
           ) : (
             <>
-              <div className="card hp-card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper">
                   <Brain size={32} color="white" />
                 </div>
                 <div className="step-number">1</div>
-                <h3 className="card-title">Generate Quiz</h3>
-                <p className="card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
-                  options each
+                <h3 className="how-it-works-card-title">Generate Quiz</h3>
+                <p className="how-it-works-card-desc">
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
+                  options each.
                 </p>
               </div>
 
-              <div className="card hp-card">
+              <div className="how-it-works-card">                
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
                 <div className="step-number number2">2</div>
-                <h3 className="card-title">Host a Game</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Host a Game</h3>
+                <p className="how-it-works-card-desc">
                   Share your 6-digit game code with friends. They'll join your
                   lobby where you can see everyone's status before starting the
                   quiz.
                 </p>
               </div>
 
-              <div className="card hp-card">
+              <div className="how-it-works-card">
                 <div className="icon-wrapper wrapper3">
                   <Clock size={32} color="white" />
                 </div>
                 <div className="step-number number3">3</div>
-                <h3 className="card-title">Play & Compete</h3>
-                <p className="card-desc">
+                <h3 className="how-it-works-card-title">Play & Compete</h3>
+                <p className="how-it-works-card-desc">
                   Race against a 15-second timer for each question. Score points
                   for correct answers and see who tops the leaderboard when the
                   quiz ends.

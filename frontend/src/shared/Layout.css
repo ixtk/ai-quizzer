@@ -1,0 +1,62 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--card-spacing);
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  header {
+    background-color: transparent;
+  }
+  .google-btn {
+    font-size: 1rem;
+    font: inherit;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    background-color: rgb(255, 98, 0);
+  }
+  .fb-btn {
+    font-size: 1rem;
+    font: inherit;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    background-color: rgb(51, 83, 163);
+  }
+  .auth-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 0.5rem;
+  }
+  .google-btn,
+  .fb-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .logout-icon {
+    cursor: pointer;
+    color: var(--gray-500);
+    transition: color 0.2s;
+    margin-left: 0.5rem;
+  }
+  .profile-txt {
+    color: var(--gray-500);
+    margin-right: 2rem;
+  }
+  .logout-div {
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .logout-icon:hover {
+    color: var(--gray-500);
+  }

@@ -6,16 +6,19 @@ import GenerateQuiz from "./Pages/generate-quiz/GenerateQuiz"
 import StartedQuiz from "./Pages/started-quiz/StartedQuiz"
 import HomePage from "./Pages/home-page/HomePage"
 import LeaderBoard from "./Pages/leader-board-page/LeaderBoard"
+import Layout from "./shared/Layout"
 
 function App() {
   return (
     <Routes>
-      <Route index element={<HomePage />} />
-      <Route path="/Lobby" element={<LobbyPage />} />
-      <Route path="/Profile" element={<ProfilePage />} />
-      <Route path="/generateQuiz" element={<GenerateQuiz />} />
-      <Route path="/startedQuiz" element={<StartedQuiz />} />
-      <Route path="/LeaderBoard" element={<LeaderBoard />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/lobby/:roomCode" element={<LobbyPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/generateQuiz" element={<GenerateQuiz />} />
+        <Route path="/startedQuiz" element={<StartedQuiz />} />
+        <Route path="/LeaderBoard" element={<LeaderBoard />} />
+      </Route>
     </Routes>
   )
 }

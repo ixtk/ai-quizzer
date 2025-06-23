@@ -134,6 +134,11 @@
   justify-content: center;
 }
 
+.start-game-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .lobby-section {
     width: auto;
