@@ -135,7 +135,7 @@ const HomePage = () => {
                 </p>
               </div>
 
-              <div className="how-it-works-card">
+              <div className="how-it-works-card">                
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>

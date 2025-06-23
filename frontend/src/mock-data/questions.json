@@ -2,31 +2,56 @@
   {
     "id": 1,
     "text": "What is the capital of France?",
-    "options": ["Berlin", "Madrid", "Paris", "Rome"],
+    "options": [
+      { "text": "Berlin", "selectedBy": ["userA"] },
+      { "text": "Madrid", "selectedBy": [] },
+      { "text": "Paris", "selectedBy": ["userB", "userC", "userD"] },
+      { "text": "Rome", "selectedBy": [] }
+    ],
     "correct": "Paris"
   },
   {
     "id": 2,
     "text": "Which planet is known as the Red Planet?",
-    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "options": [
+      { "text": "Venus", "selectedBy": [] },
+      { "text": "Mars", "selectedBy": ["userE", "userF", "userG"] },
+      { "text": "Jupiter", "selectedBy": [] },
+      { "text": "Saturn", "selectedBy": [] }
+    ],
     "correct": "Mars"
   },
   {
     "id": 3,
     "text": "Who painted the Mona Lisa?",
-    "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "options": [
+      { "text": "Vincent van Gogh", "selectedBy": [] },
+      { "text": "Pablo Picasso", "selectedBy": ["userH"] },
+      { "text": "Leonardo da Vinci", "selectedBy": ["userI", "userJ"] },
+      { "text": "Michelangelo", "selectedBy": [] }
+    ],
     "correct": "Leonardo da Vinci"
   },
   {
     "id": 4,
     "text": "What is the largest ocean on Earth?",
-    "options": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    "options": [
+      { "text": "Atlantic Ocean", "selectedBy": [] },
+      { "text": "Indian Ocean", "selectedBy": [] },
+      { "text": "Arctic Ocean", "selectedBy": ["userK"] },
+      { "text": "Pacific Ocean", "selectedBy": ["userL", "userM"] }
+    ],
     "correct": "Pacific Ocean"
   },
   {
     "id": 5,
     "text": "Which element has the chemical symbol ‘O’?",
-    "options": ["O₂", "Oxygen", "Oxysium", "Opression"],
+    "options": [
+      {"text": "O₂", "selectedBy": []}, 
+      {"text": "Oxygen", "selectedBy": ["userM"]}, 
+      {"text": "Oxysium", "selectedBy": []}, 
+      {"text": "Opression", "selectedBy": ["userD"]}
+    ],
     "correct": "O₂"
   }
 ]

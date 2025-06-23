@@ -54,7 +54,7 @@ function GenerateQuiz() {
           <div className="quiz-header-right">
             <button className="topic-btn">The Birthday Plan</button>
             <button className="btn btn-primary save-btn">
-              <Save size={19} className="icon" />
+              <Save size={30} style={{marginRight: "0.5rem"}} />
               Save Quiz
             </button>
           </div>
@@ -85,7 +85,7 @@ function GenerateQuiz() {
                   <div className="opt-letter">
                     {String.fromCharCode(65 + index)}
                   </div>
-                  {opt}
+                  {opt.text}
                 </button>
               ))}
             </div>
