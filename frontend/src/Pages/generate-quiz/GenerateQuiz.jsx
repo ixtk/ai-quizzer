@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useNavigate, Link } from "react-router"
 import { Save, RefreshCcw, Trash2, ArrowLeft } from "lucide-react"
 import { getAuth } from "firebase/auth"
-import axiosInstance from "../../lib/axiosInstance" 
+import axiosInstance from "../../lib/axiosInstance"
 import "../../App.css"
 import "./GenerateQuiz.css"
 
@@ -43,20 +43,10 @@ function GenerateQuiz() {
       const user = auth.currentUser
       if (!user) return alert("You must be logged in to save quizzes")
 
-      const token = await user.getIdToken()
-
-      const res = await axiosInstance.post(
-        "/save-quiz",
-        {
-          title: topic || "Untitled Quiz",
-          questions
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
+      const res = await axiosInstance.post("/save-quiz", {
+        title: topic || "Untitled Quiz",
+        questions
+      })
 
       if (res.status === 200) {
         alert("Quiz saved!")
