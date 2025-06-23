@@ -1,5 +1,4 @@
 import "./Layout.css"
-import { useEffect, useState } from "react"
 import { Outlet } from "react-router"
 import { Brain, LogOut } from "lucide-react"
 import { auth } from "../lib/firebase"
@@ -7,25 +6,26 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
-  signOut,
-  onAuthStateChanged
+  signOut
 } from "firebase/auth"
 import axiosInstance from "../lib/axiosInstance"
+import { useContext } from "react"
+import { AuthContext } from "../lib/AuthContext"
 
 const googleProvider = new GoogleAuthProvider()
 const facebookProvider = new FacebookAuthProvider()
 
 function Layout() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userInfo, setUserInfo] = useState(null)
+  const { user, setUser } = useContext(AuthContext)
+  const isLoggedIn = Boolean(user)
 
   const handleLogin = async provider => {
     try {
       const result = await signInWithPopup(auth, provider)
       const user = result.user
-      setIsLoggedIn(true)
-      setUserInfo({
-        displayName: user.displayName,
+
+      setUser({
+        username: user.displayName,
         photoURL: user.photoURL,
         email: user.email,
         uid: user.uid
@@ -48,42 +48,12 @@ function Layout() {
   const handleLogout = async () => {
     try {
       await signOut(auth)
-      setIsLoggedIn(false)
-      setUserInfo(null)
+      setUser(null)
       delete axiosInstance.defaults.headers.common["Authorization"]
     } catch (error) {
       console.error("Logout error:", error)
     }
   }
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        setIsLoggedIn(true)
-        setUserInfo({
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          email: user.email,
-          uid: user.uid
-        })
-
-        try {
-          const token = await user.getIdToken()
-          axiosInstance.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${token}`
-        } catch (error) {
-          console.error("Token retrieval error:", error)
-        }
-      } else {
-        setIsLoggedIn(false)
-        setUserInfo(null)
-        delete axiosInstance.defaults.headers.common["Authorization"]
-      }
-    })
-
-    return () => unsubscribe()
-  }, [])
 
   return (
     <>

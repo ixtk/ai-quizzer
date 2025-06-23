@@ -1,9 +1,33 @@
 import "../../App.css"
 import "./HomePage.css"
 import { Users, Zap, Brain, Clock, Plus } from "lucide-react"
-
+import { useContext } from "react"
+import { AuthContext } from "../../lib/AuthContext"
+import { useNavigate } from "react-router"
+import { socket } from "../../lib/socket"
+import axiosInstance from "../../lib/axiosInstance"
+import { useState } from "react"
 const HomePage = () => {
-  const isLoggedIn = true
+  const { user, isLoading } = useContext(AuthContext)
+  const isLoggedIn = Boolean(user)
+  const navigate = useNavigate()
+  const [roomCodeInput, setRoomCodeInput] = useState("")
+
+  if (isLoading) return null
+
+  const handleHostGame = async () => {
+    const res = await axiosInstance.post("/create-room")
+    const roomCode = res.data.roomCode
+
+    navigate(`/lobby/${roomCode}`)
+  }
+
+  const handleJoinGame = () => {
+    if (!roomCodeInput) return
+    navigate(`/lobby/${roomCodeInput}`)
+  }
+  
+  
 
   return (
     <div className="container">
@@ -16,25 +40,34 @@ const HomePage = () => {
           <h1 className="main-title">Create & Play </h1>
           <span className="main-title-black">AI-Generated Quizzes </span>
           <p className="subtitle">
-            Generate custom multiple-choice quizzes on any topic with Al, then
+            Generate custom multiple-choice quizzes on any topic with AI, then
             compete with friends in real-time. Test your knowledge, race against
             the clock, and climb the leaderboard!
           </p>
 
           {isLoggedIn && (
             <div className="actions">
-              <button className="btn btn-primary host-game-btn">
+              <button
+                className="btn btn-primary host-game-btn"
+                onClick={handleHostGame}
+              >
                 <Plus size={35} color="white" className="plus-icon" />
                 Host a Game
               </button>
-
               <div className="join-game">
                 <input
                   type="text"
                   className="room-input"
                   placeholder="Enter room code"
+                  value={roomCodeInput}
+                  onChange={e => setRoomCodeInput(e.target.value.toUpperCase())}
                 />
-                <button className="btn btn-outline join-btn">Join</button>
+                <button
+                  className="btn btn-outline join-btn"
+                  onClick={handleJoinGame}
+                >
+                  Join
+                </button>
               </div>
             </div>
           )}
@@ -57,8 +90,8 @@ const HomePage = () => {
                 </div>
                 <h3 className="how-it-works-card-title">Generate Quiz</h3>
                 <p className="how-it-works-card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
                   options each.
                 </p>
               </div>
@@ -96,13 +129,13 @@ const HomePage = () => {
                 <div className="step-number">1</div>
                 <h3 className="how-it-works-card-title">Generate Quiz</h3>
                 <p className="how-it-works-card-desc">
-                  Enter any topic and select a difficulty level. Gemini Al
-                  instantly creates 5-10 multiple-choice questions with 4 answer
-                  options each
+                  Enter any topic and select a difficulty level. Gemini AI
+                  instantly creates 5–10 multiple-choice questions with 4 answer
+                  options each.
                 </p>
               </div>
 
-              <div className="how-it-works-card">
+              <div className="how-it-works-card">                
                 <div className="icon-wrapper wrapper2">
                   <Users size={32} color="white" />
                 </div>
