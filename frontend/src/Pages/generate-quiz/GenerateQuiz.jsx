@@ -1,86 +1,83 @@
 import React, { useState } from "react"
-import { Link } from "react-router"
+import { useNavigate, Link } from "react-router"
 import { Save, RefreshCcw, Trash2, ArrowLeft } from "lucide-react"
+import { getAuth } from "firebase/auth"
+import axiosInstance from "../../lib/axiosInstance" 
 import "../../App.css"
 import "./GenerateQuiz.css"
-// import questionsData from "../../mock-data/questions.json"
-import { getAuth } from "firebase/auth"
 
 function GenerateQuiz() {
   const [topic, setTopic] = useState("")
   const [difficulty, setDifficulty] = useState("Easy")
   const [questions, setQuestions] = useState([])
+  const navigate = useNavigate()
 
   const handleDelete = id => {
-    const updatedQuestions = questions.filter(q => q.id !== id)
-    setQuestions(updatedQuestions)
+    setQuestions(prev => prev.filter(q => q.id !== id))
   }
-const generateQuiz = async () => {
-  try {
-    const res = await fetch("http://localhost:3000/generate-quiz", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+
+  const generateQuiz = async () => {
+    try {
+      const res = await axiosInstance.post("/generate-quiz", {
         topic,
         difficulty,
         numberOfQuestions: 5
       })
-    })
 
-    const data = await res.json()
-    if (Array.isArray(data)) {
-      const withIds = data.map((q, index) => ({ id: index + 1, ...q }))
-      setQuestions(withIds)
-    } else {
-      alert("Failed to parse quiz from response")
+      const data = res.data
+      if (Array.isArray(data)) {
+        const withIds = data.map((q, i) => ({ id: i + 1, ...q }))
+        setQuestions(withIds)
+      } else {
+        alert("Quiz format error.")
+      }
+    } catch (err) {
+      console.error("Quiz gen error:", err)
+      alert("Failed to generate quiz.")
     }
-  } catch (error) {
-    console.error("Error generating quiz:", error)
-    alert("Something went wrong while generating the quiz.")
   }
-}
 
-const saveQuiz = async () => {
-  try {
-    const auth = getAuth()
-    const user = auth.currentUser
-    if (!user) {
-      alert("You must be logged in to save the quiz.")
-      return
+  const saveQuiz = async () => {
+    try {
+      const auth = getAuth()
+      const user = auth.currentUser
+      if (!user) return alert("You must be logged in to save quizzes")
+
+      const token = await user.getIdToken()
+
+      const res = await axiosInstance.post(
+        "/save-quiz",
+        {
+          title: topic || "Untitled Quiz",
+          questions
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      if (res.status === 200) {
+        alert("Quiz saved!")
+        navigate("/profile")
+      } else {
+        alert("Save failed")
+      }
+    } catch (err) {
+      console.error("Save error:", err)
+      alert("Error saving quiz")
     }
-
-    const token = await user.getIdToken()
-
-    const res = await fetch("http://localhost:3000/save-quiz", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ quiz: questions })
-    })
-
-    if (res.ok) {
-      alert("Quiz saved successfully!")
-      window.location.href = "/profile" 
-    } else {
-      alert("Failed to save quiz")
-    }
-  } catch (err) {
-    console.error("Save error:", err)
-    alert("Error saving quiz")
   }
-}
+
   return (
     <div className="container">
       <Link to="/" className="back-link">
-        <ArrowLeft size={24} strokeWidth={2} /> Back to Quizzer
+        <ArrowLeft size={24} /> Back to Quizzer
       </Link>
 
       <div className="card create-quiz-form">
-        <h2 style={{ fontSize: "1.5rem" }}>Create a Quiz</h2>
+        <h2>Create a Quiz</h2>
         <label className="input-label">Topic / Prompt</label>
         <input
           type="text"
@@ -94,7 +91,6 @@ const saveQuiz = async () => {
             <label key={level} className="radio-label">
               <input
                 type="radio"
-                name="difficulty"
                 value={level}
                 checked={difficulty === level}
                 onChange={() => setDifficulty(level)}
@@ -110,12 +106,11 @@ const saveQuiz = async () => {
 
       <div className="card">
         <div className="quiz-header">
-          <h3 style={{ fontSize: "1.5rem" }}>Generated Quiz</h3>
+          <h3>Generated Quiz</h3>
           <div className="quiz-header-right">
-            <button className="topic-btn">The Birthday Plan</button>
+            <button className="topic-btn">{topic || "Untitled"}</button>
             <button className="btn btn-primary save-btn" onClick={saveQuiz}>
-              <Save size={19} className="icon" />
-              Save Quiz
+              <Save size={19} /> Save Quiz
             </button>
           </div>
         </div>
@@ -123,16 +118,15 @@ const saveQuiz = async () => {
         {questions.map(q => (
           <div key={q.id} className="card quiz-question">
             <div className="q-card-title">
-              <p className="question-text">
-                <strong>Question {q.id}:</strong> {q.text}
+              <p>
+                <strong>Q{q.id}:</strong> {q.text}
               </p>
-
               <div className="icon-buttons">
-                <button className="btn btn-secondary icon-btn">
+                <button className="btn icon-btn">
                   <RefreshCcw size={19} />
                 </button>
                 <button
-                  className="btn btn-secondary icon-btn"
+                  className="btn icon-btn"
                   onClick={() => handleDelete(q.id)}
                 >
                   <Trash2 size={19} />
@@ -140,10 +134,10 @@ const saveQuiz = async () => {
               </div>
             </div>
             <div className="option-div">
-              {q.options.map((opt, index) => (
-                <button key={index} className="opt-btn">
+              {q.options.map((opt, i) => (
+                <button key={i} className="opt-btn">
                   <div className="opt-letter">
-                    {String.fromCharCode(65 + index)}
+                    {String.fromCharCode(65 + i)}
                   </div>
                   {opt}
                 </button>

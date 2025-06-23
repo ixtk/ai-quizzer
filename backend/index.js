@@ -25,10 +25,12 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
 app.get("/hello-world", (req, res) => {
   res.json({ message: "Hello World" });
 });
-
 
 app.post("/users", verifyAuth, async (req, res) => {
   const firebaseId = req.user.uid;
@@ -48,10 +50,6 @@ app.post("/users", verifyAuth, async (req, res) => {
 app.post("/generate-quiz", async (req, res) => {
   const { topic, difficulty, numberOfQuestions } = req.body;
 
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
   const systemInstruction = `
     The quiz content must be family friendly.
     Output the questions in pure JSON format without any markdown (such as \`\`\` symbols).
@@ -65,12 +63,17 @@ app.post("/generate-quiz", async (req, res) => {
     ]
   `;
 
-  const userPrompt = `Generate ${numberOfQuestions || 5} quiz questions and correct answers about the topic: ${topic}. Difficulty must be ${difficulty}.`;
+  const userPrompt = `Generate ${
+    numberOfQuestions || 5
+  } quiz questions and correct answers about the topic: ${topic}. Difficulty must be ${difficulty}.`;
 
   try {
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
-      systemInstruction: { role: "system", parts: [{ text: systemInstruction }] },
+      systemInstruction: {
+        role: "system",
+        parts: [{ text: systemInstruction }],
+      },
     });
 
     const responseText = result.response.text();
@@ -83,8 +86,12 @@ app.post("/generate-quiz", async (req, res) => {
 });
 
 app.post("/save-quiz", verifyAuth, async (req, res) => {
-  const { quiz } = req.body;
+  const { title, questions } = req.body;
   const firebaseId = req.user.uid;
+
+  if (!title || !Array.isArray(questions)) {
+    return res.status(400).json({ error: "Missing title or questions" });
+  }
 
   try {
     const user = await User.findOne({ firebaseId });
@@ -92,7 +99,15 @@ app.post("/save-quiz", verifyAuth, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    user.quizzes.push(...quiz);
+    const cleanedQuestions = questions.map(({ id, ...rest }) => rest);
+
+    const newQuiz = {
+      title,
+      questions: cleanedQuestions,
+      createdAt: new Date(),
+    };
+
+    user.quizzes.push(newQuiz);
     await user.save();
 
     res.status(200).json({ message: "Quiz saved successfully" });
@@ -101,6 +116,7 @@ app.post("/save-quiz", verifyAuth, async (req, res) => {
     res.status(500).json({ error: "Failed to save quiz" });
   }
 });
+
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });

@@ -8,9 +8,15 @@ const userSchema = new mongoose.Schema({
   },
   quizzes: [
     {
-      text: String,
-      options: [String],
-      correctAnswer: String,
+      title: String,
+      createdAt: { type: Date, default: Date.now },
+      questions: [
+        {
+          text: String,
+          options: [String],
+          correctAnswer: String,
+        },
+      ],
     },
   ],
 });
