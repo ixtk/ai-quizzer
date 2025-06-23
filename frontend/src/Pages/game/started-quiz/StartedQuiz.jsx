@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Clock } from "lucide-react"
-import "../../App.css"
+import "../../../App.css"
 import "./StartedQuiz.css"
 import questionsData from "../../../mock-data/questions.json"
 

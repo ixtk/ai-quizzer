@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router"
 import LobbyPage from "./Pages/LobbyPage/LobbyPage"
 import ProfilePage from "./Pages/ProfilePage/ProfilePage"
 import GenerateQuiz from "./Pages/generate-quiz/GenerateQuiz"
-import StartedQuiz from "./Pages/started-quiz/StartedQuiz"
+import StartedQuiz from "./Pages/game/started-quiz/StartedQuiz"
 import HomePage from "./Pages/home-page/HomePage"
-import LeaderBoard from "./Pages/leader-board-page/LeaderBoard"
+import LeaderBoard from "./Pages/game/leader-board-page/LeaderBoard"
 import Layout from "./shared/Layout"
 
 function App() {

@@ -1,8 +1,8 @@
-import "../../App.css"
+import "../../../App.css"
 import "./LeaderBoard.css"
 import React, { useState } from "react"
 import { Trophy, RefreshCw, Home, Check } from "lucide-react"
-import questions from "../../mock-data/questions.json"
+import questions from "../../../mock-data/questions.json"
 
 const LeaderBoard = () => {
   const [selectedTab, setSelectedTab] = useState("leaderboard")
