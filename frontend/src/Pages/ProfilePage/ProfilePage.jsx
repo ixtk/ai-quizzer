@@ -4,7 +4,6 @@ import { PlusCircle, Play, Pencil, Trash2 } from "lucide-react"
 import { useNavigate } from "react-router"
 import { useContext } from "react"
 import { AuthContext } from "../../lib/AuthContext"
-import { socket } from "../../lib/socket"
 import axiosInstance from "../../lib/axiosInstance"
 
 function ProfilePage() {
@@ -15,9 +14,8 @@ function ProfilePage() {
     const res = await axiosInstance.post("/create-room")
     const roomCode = res.data.roomCode
 
-    navigate(`/lobby/${roomCode}`)
+    navigate(`/game/${roomCode}`, { state: { isHost: true } })
   }
-  
 
   return (
     <div className="container">

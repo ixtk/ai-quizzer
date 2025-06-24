@@ -6,13 +6,11 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 
 import { verifyAuth } from "./middleware.js";
-
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { User } from "./models/User.js";
 
 dotenv.config();
-
-import { User } from "./models/User.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -48,7 +46,6 @@ app.get("/hello-world", (req, res) => {
 
 app.post("/users", verifyAuth, async (req, res) => {
   const firebaseId = req.user.uid;
-
   try {
     let user = await User.findOne({ firebaseId });
     if (!user) {
@@ -131,11 +128,26 @@ app.post("/save-quiz", verifyAuth, async (req, res) => {
   }
 });
 
+app.get("/quizzes", verifyAuth, async (req, res) => {
+  const firebaseId = req.user.uid;
+  try {
+    const user = await User.findOne({ firebaseId });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user.quizzes || []);
+  } catch (err) {
+    console.error("Quiz fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch quizzes" });
+  }
+});
+
 app.post("/create-room", verifyAuth, async (req, res) => {
   const roomCode = generateRoomCode();
 
   rooms[roomCode] = {
     host: null,
+    hostUsername: null,
     users: [],
     messages: [],
     status: "waiting",
@@ -158,20 +170,31 @@ io.on("connection", (socket) => {
     const room = rooms[roomCode];
     if (!room) return;
 
-    const hostPlayer = {
-      sId: socket.id,
-      username: socket.username,
-      ready: false,
-    };
-
     const alreadyExists = room.users.some((u) => u.sId === socket.id);
     if (!alreadyExists) {
-      room.users.push(hostPlayer);
-      console.log(`👑 [HOST JOINED] ${socket.username} in ${roomCode}`);
+      room.users.push({
+        sId: socket.id,
+        username: socket.username,
+        ready: false,
+      });
     }
 
-    room.host = socket.id;
     socket.join(roomCode);
+
+    if (!room.hostUsername) {
+      room.host = socket.id;
+      room.hostUsername = socket.username;
+      console.log(`👑 [HOST SET] ${socket.username} is host in ${roomCode}`);
+    } else if (room.hostUsername === socket.username) {
+      room.host = socket.id;
+      console.log(
+        `♻️ [HOST RESTORED] ${socket.username} rejoined as host in ${roomCode}`
+      );
+    } else {
+      console.log(
+        `🙅‍♂️ [NOT HOST] ${socket.username} joined, host is ${room.hostUsername}`
+      );
+    }
 
     io.to(roomCode).emit("user-joined", {
       users: room.users,
@@ -183,16 +206,13 @@ io.on("connection", (socket) => {
     const room = rooms[roomCode];
     if (!room) return;
 
-    const newPlayer = {
-      sId: socket.id,
-      username: socket.username,
-      ready: false,
-    };
-
     const alreadyExists = room.users.some((u) => u.sId === socket.id);
     if (!alreadyExists) {
-      room.users.push(newPlayer);
-      console.log(`🙋 [PLAYER JOINED] ${socket.username} in ${roomCode}`);
+      room.users.push({
+        sId: socket.id,
+        username: socket.username,
+        ready: false,
+      });
     }
 
     socket.join(roomCode);
@@ -210,11 +230,6 @@ io.on("connection", (socket) => {
     const player = room.users.find((u) => u.sId === socket.id);
     if (player) {
       player.ready = !player.ready;
-      console.log(
-        `🔄 [TOGGLE READY] ${player.username} is now ${
-          player.ready ? "READY" : "NOT READY"
-        } in ${roomCode}`
-      );
     }
 
     io.to(roomCode).emit("ready-updated", {
@@ -224,28 +239,64 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`⛔ [DISCONNECTED] ${socket.username} (${socket.id})`);
+
     for (const roomCode in rooms) {
       const room = rooms[roomCode];
       const idx = room.users.findIndex((u) => u.sId === socket.id);
       if (idx !== -1) {
         const username = room.users[idx].username;
         room.users.splice(idx, 1);
-        console.log(`📤 [REMOVED] ${username} left ${roomCode}`);
 
-        if (room.host === socket.id) {
-          room.host = room.users[0]?.sId || null;
-          console.log(`👑 [HOST CHANGED] New host: ${room.host || "none"}`);
+        const stillHere = room.users.find(
+          (u) => u.username === room.hostUsername
+        );
+        if (room.host === socket.id && !stillHere) {
+          console.log(
+            `⏳ Waiting to see if host ${socket.username} reconnects...`
+          );
+
+          setTimeout(() => {
+            const roomExists = rooms[roomCode];
+            const hostStillMissing =
+              roomExists &&
+              !roomExists.users.find((u) => u.username === room.hostUsername);
+
+            if (roomExists && hostStillMissing) {
+              const newHost = roomExists.users[0];
+              roomExists.host = newHost?.sId || null;
+              roomExists.hostUsername = newHost?.username || null;
+              console.log(
+                `👑 [NEW HOST] ${
+                  newHost?.username || "none"
+                } promoted in ${roomCode}`
+              );
+
+              io.to(roomCode).emit("user-joined", {
+                users: roomExists.users,
+                hostId: roomExists.host,
+              });
+            } else {
+              console.log(
+                `✅ [HOST RETURNED] ${room.hostUsername} rejoined in time`
+              );
+            }
+          }, 5000); // wait 5 seconds before reassigning
         }
+        
 
         if (room.users.length === 0) {
-          delete rooms[roomCode];
-          console.log(`🗑️ [ROOM DELETED] ${roomCode}`);
-        } else {
-          io.to(roomCode).emit("user-disconnected", {
-            users: room.users,
-            hostId: room.host,
-          });
+          setTimeout(() => {
+            if (rooms[roomCode] && rooms[roomCode].users.length === 0) {
+              delete rooms[roomCode];
+              console.log(`🗑️ [ROOM DELETED] ${roomCode}`);
+            }
+          }, 10000);
         }
+
+        io.to(roomCode).emit("user-joined", {
+          users: room.users,
+          hostId: room.host,
+        });
       }
     }
   });

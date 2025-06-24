@@ -1,30 +1,45 @@
-import { Link, useParams } from "react-router"
+import { Link, useParams, useLocation, useNavigate } from "react-router"
 import { useEffect, useState, useContext } from "react"
 import { ArrowLeft, Copy, Users, CircleCheckBig, Loader } from "lucide-react"
 import "./GamePage.css"
 import { socket } from "../../../lib/socket"
 import { AuthContext } from "../../../lib/AuthContext"
+import axiosInstance from "../../../lib/axiosInstance"
 
 function GamePage() {
   const { user, isLoading } = useContext(AuthContext)
   const { roomCode } = useParams()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [isHost, setIsHost] = useState(location.state?.isHost ?? false)
+
   const [players, setPlayers] = useState([])
-  const [selectedQuiz, setSelectedQuiz] = useState("")
+  const [selectedQuiz, setSelectedQuiz] = useState(null)
+  const [quizzes, setQuizzes] = useState([])
   const [hostId, setHostId] = useState("")
   const [mySocketId, setMySocketId] = useState("")
 
-  const quizOptions = [
-    { id: "quiz1", name: "General Knowledge" },
-    { id: "quiz2", name: "Science & Nature" },
-    { id: "quiz3", name: "History" },
-    { id: "quiz4", name: "Sports" }
-  ]
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("lobbyState"))
+    if (saved && !location.state?.isHost) {
+      setIsHost(saved.isHost)
+    }
+  }, [location.state])
 
   useEffect(() => {
     if (!user?.username) return
 
     const join = () => {
-      socket.emit("join-room", { roomCode })
+      if (isHost) {
+        socket.emit("host-join-room", { roomCode })
+      } else {
+        socket.emit("join-room", { roomCode })
+      }
+
+      localStorage.setItem(
+        "lobbyState",
+        JSON.stringify({ roomCode, isHost: Boolean(isHost) })
+      )
     }
 
     socket.auth = { username: user.username }
@@ -35,7 +50,7 @@ function GamePage() {
     } else {
       join()
     }
-  }, [roomCode, user?.username])
+  }, [roomCode, user?.username, isHost])
 
   useEffect(() => {
     if (socket.connected) {
@@ -67,13 +82,33 @@ function GamePage() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!isHost) return
+
+    const fetchQuizzes = async () => {
+      try {
+        const response = await axiosInstance.get("/quizzes")
+        setQuizzes(response.data)
+      } catch (error) {
+        console.error("Failed to fetch quizzes", error)
+      }
+    }
+
+    fetchQuizzes()
+  }, [isHost])
+
   const handleToggleReady = () => {
     socket.emit("toggle-ready", { roomCode })
   }
 
   const handleRandomize = () => {
-    const random = quizOptions[Math.floor(Math.random() * quizOptions.length)]
-    setSelectedQuiz(random.id)
+    const random = quizzes[Math.floor(Math.random() * quizzes.length)]
+    setSelectedQuiz(random)
+  }
+
+  const handleLeave = () => {
+    localStorage.removeItem("lobbyState")
+    navigate("/")
   }
 
   const allReady =
@@ -85,7 +120,7 @@ function GamePage() {
 
   return (
     <div className="container">
-      <Link to="/" className="home-link">
+      <Link to="/" className="home-link" onClick={handleLeave}>
         <ArrowLeft />
         Back to Home
       </Link>
@@ -148,48 +183,56 @@ function GamePage() {
           </div>
         </div>
 
-        <div className="quiz-section">
-          <div className="quiz-badge card">
-            <h1>Select Your Quiz</h1>
-            <p>Choose a quiz to use in the game</p>
+        {isHost && (
+          <div className="quiz-section">
+            <div className="quiz-badge card">
+              <h1>Select Your Quiz</h1>
+              <p>Choose a quiz to use in the game</p>
 
-            <select
-              className="quiz-input btn btn-outline"
-              value={selectedQuiz}
-              onChange={e => setSelectedQuiz(e.target.value)}
-            >
-              <option value="">Select a quiz</option>
-              {quizOptions.map(quiz => (
-                <option key={quiz.id} value={quiz.id}>
-                  {quiz.name}
-                </option>
-              ))}
-            </select>
-
-            <button
-              className="randomize-button btn btn-outline"
-              onClick={handleRandomize}
-            >
-              Randomize
-            </button>
-          </div>
-
-          {mySocketId === hostId && (
-            <>
-              <button
-                className="start-game-button btn btn-primary"
-                disabled={!allReady}
+              <select
+                className="quiz-input btn btn-outline"
+                value={selectedQuiz?.title || ""}
+                onChange={e => {
+                  const selected = quizzes.find(
+                    quiz => quiz.title === e.target.value
+                  )
+                  setSelectedQuiz(selected || null)
+                }}
               >
-                Start Game
+                <option value="">Select a quiz</option>
+                {quizzes.map(quiz => (
+                  <option key={quiz._id} value={quiz.title}>
+                    {quiz.title}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                className="randomize-button btn btn-outline"
+                onClick={handleRandomize}
+                disabled={quizzes.length === 0}
+              >
+                Randomize
               </button>
-              {!allReady && (
-                <p className="helper-text">
-                  All players must be ready to start the game
-                </p>
-              )}
-            </>
-          )}
-        </div>
+            </div>
+
+            {mySocketId === hostId && (
+              <>
+                <button
+                  className="start-game-button btn btn-primary"
+                  disabled={!allReady}
+                >
+                  Start Game
+                </button>
+                {!allReady && (
+                  <p className="helper-text">
+                    All players must be ready to start the game
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
