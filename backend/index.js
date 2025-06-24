@@ -176,7 +176,9 @@ io.on("connection", (socket) => {
         sId: socket.id,
         username: socket.username,
         ready: false,
+        answers: [],
       });
+      
     }
 
     socket.join(roomCode);
@@ -212,7 +214,9 @@ io.on("connection", (socket) => {
         sId: socket.id,
         username: socket.username,
         ready: false,
+        answers: [],
       });
+      
     }
 
     socket.join(roomCode);
@@ -300,6 +304,41 @@ io.on("connection", (socket) => {
       }
     }
   });
+
+  socket.on("game-started", async ({ roomCode, selectedQuizId }) => {
+    const room = rooms[roomCode];
+    if (!room) return;
+
+    try {
+      const user = await User.findOne({
+        quizzes: { $elemMatch: { _id: selectedQuizId } },
+      });
+      if (!user) return;
+
+      const quiz = user.quizzes.find(
+        (q) => q._id.toString() === selectedQuizId
+      );
+      if (!quiz) return;
+
+      room.status = "gameOngoing";
+      room.selectedQuizId = selectedQuizId;
+      room.quiz = quiz.questions;
+      room.currentQuestionIndex = 0;
+
+      io.to(roomCode).emit("phase-changed", {
+        newPhase: "gameOngoing",
+      });
+
+      io.to(roomCode).emit("question", {
+        index: 0,
+        question: quiz.questions[0],
+      });
+    } catch (error) {
+      console.error("❌ Failed to load quiz during game-started:", error);
+    }
+  });
+  
+  
 });
 
 httpServer.listen(3000, () => {

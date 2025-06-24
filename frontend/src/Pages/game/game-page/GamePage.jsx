@@ -11,20 +11,18 @@ function GamePage() {
   const { roomCode } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const [isHost, setIsHost] = useState(location.state?.isHost ?? false)
+
+  const [isHost, setIsHost] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem("lobbyState"))
+    return location.state?.isHost ?? saved?.isHost ?? false
+  })
 
   const [players, setPlayers] = useState([])
   const [selectedQuiz, setSelectedQuiz] = useState(null)
   const [quizzes, setQuizzes] = useState([])
   const [hostId, setHostId] = useState("")
   const [mySocketId, setMySocketId] = useState("")
-
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("lobbyState"))
-    if (saved && !location.state?.isHost) {
-      setIsHost(saved.isHost)
-    }
-  }, [location.state])
+  const [gamePhase, setGamePhase] = useState("lobby")
 
   useEffect(() => {
     if (!user?.username) return
@@ -36,10 +34,7 @@ function GamePage() {
         socket.emit("join-room", { roomCode })
       }
 
-      localStorage.setItem(
-        "lobbyState",
-        JSON.stringify({ roomCode, isHost: Boolean(isHost) })
-      )
+      localStorage.setItem("lobbyState", JSON.stringify({ roomCode, isHost }))
     }
 
     socket.auth = { username: user.username }
@@ -64,6 +59,16 @@ function GamePage() {
     socket.on("user-joined", ({ users, hostId }) => {
       setPlayers(users)
       setHostId(hostId)
+
+      if (socket.id && socket.id === hostId) {
+        setIsHost(true)
+        localStorage.setItem(
+          "lobbyState",
+          JSON.stringify({ roomCode, isHost: true })
+        )
+      } else {
+        setIsHost(false)
+      }
     })
 
     socket.on("user-disconnected", ({ users, hostId }) => {
@@ -80,22 +85,32 @@ function GamePage() {
       socket.off("user-disconnected")
       socket.off("ready-updated")
     }
-  }, [])
+  }, [roomCode])
 
   useEffect(() => {
-    if (!isHost) return
+    if (!user || !isHost) return
 
     const fetchQuizzes = async () => {
       try {
         const response = await axiosInstance.get("/quizzes")
         setQuizzes(response.data)
-      } catch (error) {
-        console.error("Failed to fetch quizzes", error)
+      } catch (err) {
+        console.error("❌ Failed to fetch quizzes:", err)
       }
     }
 
     fetchQuizzes()
-  }, [isHost])
+  }, [user, isHost])
+
+  useEffect(() => {
+    socket.on("phase-changed", ({ newPhase }) => {
+      setGamePhase(newPhase)
+    })
+
+    return () => {
+      socket.off("phase-changed")
+    }
+  }, [])
 
   const handleToggleReady = () => {
     socket.emit("toggle-ready", { roomCode })
@@ -111,8 +126,16 @@ function GamePage() {
     navigate("/")
   }
 
-  const allReady =
-    players.length > 0 && players.every(player => player.ready === true)
+  const handleStartGame = () => {
+    if (!selectedQuiz) return
+    socket.emit("game-started", {
+      roomCode,
+      selectedQuizId: selectedQuiz._id
+    })
+    console.log("⏯ Emitting game-started with", selectedQuiz?._id, roomCode)
+  }
+
+  const allReady = players.length > 0 && players.every(player => player.ready)
 
   if (isLoading || !user) {
     return <div className="container">Loading...</div>
@@ -220,7 +243,8 @@ function GamePage() {
               <>
                 <button
                   className="start-game-button btn btn-primary"
-                  disabled={!allReady}
+                  onClick={handleStartGame}
+                  disabled={!allReady || !selectedQuiz}
                 >
                   Start Game
                 </button>
