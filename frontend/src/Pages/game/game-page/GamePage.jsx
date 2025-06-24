@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router"
 import { useEffect, useState, useContext } from "react"
 import { ArrowLeft, Copy, Users, CircleCheckBig, Loader } from "lucide-react"
-import "./LobbyPage.css"
-import { socket } from "../../lib/socket"
-import { AuthContext } from "../../lib/AuthContext"
+import "./GamePage.css"
+import { socket } from "../../../lib/socket"
+import { AuthContext } from "../../../lib/AuthContext"
 
-function LobbyPage() {
+function GamePage() {
   const { user, isLoading } = useContext(AuthContext)
   const { roomCode } = useParams()
   const [players, setPlayers] = useState([])
@@ -195,4 +195,4 @@ function LobbyPage() {
   )
 }
 
-export default LobbyPage
+export default GamePage

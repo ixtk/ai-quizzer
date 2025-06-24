@@ -1,6 +1,6 @@
 import "./App.css"
 import { Routes, Route } from "react-router"
-import LobbyPage from "./Pages/LobbyPage/LobbyPage"
+import GamePage from "./Pages/game/game-page/GamePage"
 import ProfilePage from "./Pages/ProfilePage/ProfilePage"
 import GenerateQuiz from "./Pages/generate-quiz/GenerateQuiz"
 import StartedQuiz from "./Pages/game/started-quiz/StartedQuiz"
@@ -13,7 +13,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="/lobby/:roomCode" element={<LobbyPage />} />
+        <Route path="/game/:roomCode" element={<GamePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generateQuiz" element={<GenerateQuiz />} />
         <Route path="/startedQuiz" element={<StartedQuiz />} />
