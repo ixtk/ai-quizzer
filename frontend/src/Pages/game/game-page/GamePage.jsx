@@ -5,6 +5,8 @@ import "./GamePage.css"
 import { socket } from "../../../lib/socket"
 import { AuthContext } from "../../../lib/AuthContext"
 import axiosInstance from "../../../lib/axiosInstance"
+import StartedQuiz from "../started-quiz/StartedQuiz"
+import LeaderBoard from "../leader-board-page/LeaderBoard"
 
 function GamePage() {
   const { user, isLoading } = useContext(AuthContext)
@@ -22,7 +24,14 @@ function GamePage() {
   const [quizzes, setQuizzes] = useState([])
   const [hostId, setHostId] = useState("")
   const [mySocketId, setMySocketId] = useState("")
-  const [gamePhase, setGamePhase] = useState("lobby")
+  const [phase, setPhase] = useState("lobby")
+
+  useEffect(() => {
+    socket.on("phase-changed", ({ newPhase }) => {
+      setPhase(newPhase)
+    })
+    return () => socket.off("phase-changed")
+  }, [])
 
   useEffect(() => {
     if (!user?.username) return
@@ -33,7 +42,6 @@ function GamePage() {
       } else {
         socket.emit("join-room", { roomCode })
       }
-
       localStorage.setItem("lobbyState", JSON.stringify({ roomCode, isHost }))
     }
 
@@ -102,16 +110,6 @@ function GamePage() {
     fetchQuizzes()
   }, [user, isHost])
 
-  useEffect(() => {
-    socket.on("phase-changed", ({ newPhase }) => {
-      setGamePhase(newPhase)
-    })
-
-    return () => {
-      socket.off("phase-changed")
-    }
-  }, [])
-
   const handleToggleReady = () => {
     socket.emit("toggle-ready", { roomCode })
   }
@@ -132,14 +130,16 @@ function GamePage() {
       roomCode,
       selectedQuizId: selectedQuiz._id
     })
-    console.log("⏯ Emitting game-started with", selectedQuiz?._id, roomCode)
   }
 
-  const allReady = players.length > 0 && players.every(player => player.ready)
+  const allReady = players.length > 0 && players.every(p => p.ready)
 
   if (isLoading || !user) {
     return <div className="container">Loading...</div>
   }
+
+  if (phase === "gameOngoing") return <StartedQuiz />
+  if (phase === "gameOver") return <LeaderBoard />
 
   return (
     <div className="container">
@@ -147,6 +147,7 @@ function GamePage() {
         <ArrowLeft />
         Back to Home
       </Link>
+
       <div className="lobby-page">
         <div className="card lobby-section">
           <h1 className="lobby-title">Game Lobby</h1>
@@ -216,16 +217,14 @@ function GamePage() {
                 className="quiz-input btn btn-outline"
                 value={selectedQuiz?.title || ""}
                 onChange={e => {
-                  const selected = quizzes.find(
-                    quiz => quiz.title === e.target.value
-                  )
+                  const selected = quizzes.find(q => q.title === e.target.value)
                   setSelectedQuiz(selected || null)
                 }}
               >
                 <option value="">Select a quiz</option>
-                {quizzes.map(quiz => (
-                  <option key={quiz._id} value={quiz.title}>
-                    {quiz.title}
+                {quizzes.map(q => (
+                  <option key={q._id} value={q.title}>
+                    {q.title}
                   </option>
                 ))}
               </select>

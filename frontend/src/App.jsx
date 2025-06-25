@@ -16,8 +16,6 @@ function App() {
         <Route path="/game/:roomCode" element={<GamePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/generateQuiz" element={<GenerateQuiz />} />
-        <Route path="/startedQuiz" element={<StartedQuiz />} />
-        <Route path="/LeaderBoard" element={<LeaderBoard />} />
       </Route>
     </Routes>
   )
