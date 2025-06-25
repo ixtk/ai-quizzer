@@ -1,22 +1,60 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Clock } from "lucide-react"
 import "../../../App.css"
 import "./StartedQuiz.css"
+import { socket } from "../../../lib/socket"
 import questionsData from "../../../mock-data/questions.json"
 
 function StartedQuiz() {
-  const [current, setCurrent] = useState(0)
-  const total = questionsData.length
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
 
   const handleNext = () => {
-    if (current < total - 1) {
-      setCurrent(current + 1)
+    if (currentQuestionIndex < total - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1)
     }
   }
+  const total = questionsData.length
+  const q = questionsData[currentQuestionIndex]
+  const progressPercent = ((currentQuestionIndex + 1) / total) * 100
 
-  const progressPercent = ((current + 1) / total) * 100
+  useEffect(() => {
+    const handleAnswerSelected = ({ answers }) => {
+      console.log("[✅] Answer confirmed by backend:", answers)
 
-  const q = questionsData[current]
+      setCurrentQuestionIndex(index => {
+        const next = index + 1
+        if (next < questionsData.length) {
+          return next
+        } else {
+          console.log("🎉 Quiz complete")
+          return index // don’t go past the last
+        }
+      })
+
+      setSelectedAnswer(null)
+    }
+
+    socket.on("answer-selected", handleAnswerSelected)
+    return () => socket.off("answer-selected", handleAnswerSelected)
+  }, [])
+  
+
+  const handleSubmit = () => {
+    if (!selectedAnswer) return
+
+    socket.emit("select-answer", {
+      selected: selectedAnswer
+    })
+  }
+
+  if (!q) {
+    return (
+      <div className="container">
+        <p>No more questions.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="container">
@@ -25,13 +63,14 @@ function StartedQuiz() {
           <div>
             <h1 className="sq-title">World Geography</h1>
             <p className="sq-subtitle">
-              Question {current + 1} of {total}
+              Question {currentQuestionIndex + 1} of {total}
             </p>
           </div>
           <div className="sq-timer">
             <Clock size={20} /> 00:13
           </div>
         </header>
+
         <div className="sq-progress-bar">
           <div
             className="sq-progress-fill"
@@ -42,29 +81,34 @@ function StartedQuiz() {
         <div className="sq-question-box">
           <p className="sq-question-text">{q.text}</p>
           <div className="sq-options">
-            {q.options.map((opt, i) => (
-              <button key={i} className="sq-option-btn">
-                <div className="sq-opt-letter">
-                  {String.fromCharCode(65 + i)}
-                </div>
-                <span>{opt.text}</span>
-              </button>
-            ))}
+            {q.options.map((opt, i) => {
+              const isSelected = selectedAnswer === opt.text
+              return (
+                <button
+                  key={i}
+                  className={`sq-option-btn ${isSelected ? "selected" : ""}`}
+                  onClick={() => setSelectedAnswer(opt.text)}
+                >
+                  <div className="sq-opt-letter">
+                    {String.fromCharCode(65 + i)}
+                  </div>
+                  <span>{opt.text}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
+
         <footer className="sq-footer">
-          <button className="score-btn btn-outline">
-            Score: <span className="score-count">0</span>
-          </button>
           <div className="btn-div">
             <button
-              className="btn btn-outline sq-btn-next"
-              onClick={handleNext}
-              disabled={current === total - 1}
+              className="btn btn-primary sq-btn-submit"
+              onClick={() => {
+                handleSubmit()
+                handleNext()
+              }}
+              disabled={!selectedAnswer}
             >
-              Next
-            </button>
-            <button className="btn btn-primary sq-btn-submit">
               Submit Answer
             </button>
           </div>
@@ -73,4 +117,5 @@ function StartedQuiz() {
     </div>
   )
 }
+
 export default StartedQuiz

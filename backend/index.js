@@ -178,7 +178,6 @@ io.on("connection", (socket) => {
         ready: false,
         answers: [],
       });
-      
     }
 
     socket.join(roomCode);
@@ -216,7 +215,6 @@ io.on("connection", (socket) => {
         ready: false,
         answers: [],
       });
-      
     }
 
     socket.join(roomCode);
@@ -284,9 +282,8 @@ io.on("connection", (socket) => {
                 `✅ [HOST RETURNED] ${room.hostUsername} rejoined in time`
               );
             }
-          }, 5000); // wait 5 seconds before reassigning
+          }, 5000);
         }
-        
 
         if (room.users.length === 0) {
           setTimeout(() => {
@@ -337,7 +334,43 @@ io.on("connection", (socket) => {
       console.error("❌ Failed to load quiz during game-started:", error);
     }
   });
-  
+
+  socket.on("select-answer", ({ selected }) => {
+    const roomCode = socket.data.roomCode;
+    const room = rooms[roomCode];
+    const player = room.users.find((u) => u.sId === socket.id);
+
+    if (!player.answers) {
+      player.answers = {};
+    }
+
+    const index = player.currentIndex || 0;
+    player.answers[index] = { answer: selected };
+
+    socket.emit("answer-selected", {
+      answers: player.answers,
+    });
+
+    // ინდივიდუალური ფაზის შეცვლა
+    const playerFinished =
+      Object.keys(player.answers).length === room.quiz.length;
+    if (playerFinished) {
+      socket.emit("phase-changed", {
+        newPhase: "waitingForOthers",
+      });
+    }
+
+    // ✅ ყველა დასრულების შემოწმება
+    const allFinished = room.users.every(
+      (u) => Object.keys(u.answers).length === room.quiz.length
+    );
+
+    if (allFinished) {
+      io.to(roomCode).emit("phase-changed", {
+        newPhase: "gameOver",
+      });
+    }
+  });
   
 });
 
