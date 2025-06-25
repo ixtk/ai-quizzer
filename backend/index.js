@@ -18,7 +18,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.ALLOWED_ORIGIN,
   },
 });
 
@@ -28,14 +28,11 @@ const generateRoomCode = customAlphabet(
 );
 const rooms = {};
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/quizzer", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -251,6 +248,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000, () => {
-  console.log("🚀 Server running on http://localhost:3000");
+httpServer.listen(process.env.PORT, () => {
+  console.log(`🚀 Server running on port ${process.env.PORT}`);
 });
