@@ -7,7 +7,7 @@ import StartedQuiz from "./Pages/started-quiz/StartedQuiz"
 import HomePage from "./Pages/home-page/HomePage"
 import LeaderBoard from "./Pages/leader-board-page/LeaderBoard"
 import Layout from "./shared/Layout"
-
+import QuizFinish from "./Pages/started-quiz/QuizFinish"
 function App() {
   return (
     <Routes>
@@ -18,6 +18,7 @@ function App() {
         <Route path="/generateQuiz" element={<GenerateQuiz />} />
         <Route path="/startedQuiz" element={<StartedQuiz />} />
         <Route path="/LeaderBoard" element={<LeaderBoard />} />
+        <Route path="/QuizFinish" element={<QuizFinish />}/>
       </Route>
     </Routes>
   )
