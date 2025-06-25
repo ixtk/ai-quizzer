@@ -1,0 +1,152 @@
+.home-link {
+  margin-bottom: var(--card-spacing);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--purple-700);
+}
+
+.lobby-page {
+  display: flex;
+  background-color: var(--gray-100);
+  border: none;
+  gap: var(--card-spacing);
+}
+
+.lobby-section {
+  width: 100%;
+}
+
+.lobby-subtitle {
+  color: var(--gray-500);
+}
+
+.game-code-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--green-300);
+  height: auto;
+  gap: var(--card-spacing);
+}
+
+.game-code-label {
+  color: var(--green-900);
+  font-weight: var(--font-weight-600);
+}
+
+.game-code {
+  color: var(--green-900);
+}
+
+.copy-button {
+  color: var(--green-900);
+  font-weight: var(--font-weight-600);
+  display: flex;
+  gap: var(--card-spacing);
+}
+
+.player-count {
+  display: flex;
+  font-weight: var(--font-weight-600);
+}
+
+.player-list {
+  width: 100%;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--card-spacing);
+}
+
+.player-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--gray-100);
+  border-radius: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: var(--card-spacing);
+}
+
+.player-name {
+  font-weight: var(--font-weight-600);
+}
+
+.host-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--purple-300);
+  color: var(--purple-900);
+  height: 1.25rem;
+  font-size: 0.75rem;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+.ready-status {
+  display: flex;
+  gap: var(--card-spacing);
+}
+
+.ready {
+  color: var(--green-700);
+}
+
+.not-ready {
+  color: var(--red-700);
+}
+
+.quiz-badge {
+  min-width: 300px;
+}
+
+.quiz-section p {
+  color: var(--gray-500);
+}
+
+.quiz-input {
+  margin-bottom: var(--card-spacing);
+  width: 100%;
+}
+
+.randomize-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.start-game-button {
+  margin-top: var(--card-spacing);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.start-game-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .lobby-section {
+    width: auto;
+  }
+  .quiz-section {
+    width: 100%;
+  }
+  .lobby-page {
+    flex-direction: column;
+  }
+}
