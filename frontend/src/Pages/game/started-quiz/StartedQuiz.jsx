@@ -3,19 +3,15 @@ import { Clock } from "lucide-react"
 import "../../../App.css"
 import "./StartedQuiz.css"
 import { socket } from "../../../lib/socket"
-import questionsData from "../../../mock-data/questions.json"
 
 function StartedQuiz({ roomCode, selectedQuiz }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [question, setQuestion] = useState(null)
 
-  const handleNext = () => {
-    if (currentQuestionIndex < total - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
-    }
-  }
-  const total = questionsData.length
-  const q = questionsData[currentQuestionIndex]
+  const questions = selectedQuiz?.questions || []
+  const total = questions.length
+  const q = questions[currentQuestionIndex]
   const progressPercent = ((currentQuestionIndex + 1) / total) * 100
 
   useEffect(() => {
@@ -24,7 +20,7 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
 
       setCurrentQuestionIndex(index => {
         const next = index + 1
-        if (next < questionsData.length) {
+        if (next < questions.length) {
           return next
         } else {
           console.log("🎉 Quiz complete")
@@ -37,6 +33,16 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
 
     socket.on("answer-selected", handleAnswerSelected)
     return () => socket.off("answer-selected", handleAnswerSelected)
+  }, [questions.length])
+
+  useEffect(() => {
+    const handleQuestion = ({ index, question }) => {
+      setCurrentQuestionIndex(index)
+      setQuestion(question) // You'll need to manage a separate state for current question
+    }
+
+    socket.on("question", handleQuestion)
+    return () => socket.off("question", handleQuestion)
   }, [])
 
   const handleSubmit = () => {
@@ -48,10 +54,10 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
     })
   }
 
-  if (!q) {
+  if (!selectedQuiz || !q) {
     return (
       <div className="container">
-        <p>No more questions.</p>
+        <p>Loading quiz questions...</p>
       </div>
     )
   }
@@ -61,7 +67,7 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
       <div className="card">
         <header className="sq-header">
           <div>
-            <h1 className="sq-title">World Geography</h1>
+            <h1 className="sq-title">{selectedQuiz.title}</h1>
             <p className="sq-subtitle">
               Question {currentQuestionIndex + 1} of {total}
             </p>
@@ -82,17 +88,17 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
           <p className="sq-question-text">{q.text}</p>
           <div className="sq-options">
             {q.options.map((opt, i) => {
-              const isSelected = selectedAnswer === opt.text
+              const isSelected = selectedAnswer === opt
               return (
                 <button
                   key={i}
                   className={`sq-option-btn ${isSelected ? "selected" : ""}`}
-                  onClick={() => setSelectedAnswer(opt.text)}
+                  onClick={() => setSelectedAnswer(opt)}
                 >
                   <div className="sq-opt-letter">
                     {String.fromCharCode(65 + i)}
                   </div>
-                  <span>{opt.text}</span>
+                  <span>{opt}</span>
                 </button>
               )
             })}
@@ -103,9 +109,7 @@ function StartedQuiz({ roomCode, selectedQuiz }) {
           <div className="btn-div">
             <button
               className="btn btn-primary sq-btn-submit"
-              onClick={() => {
-                handleSubmit()
-              }}
+              onClick={handleSubmit}
               disabled={!selectedAnswer}
             >
               Submit Answer
