@@ -335,23 +335,32 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("select-answer", ({ selected }) => {
-    const roomCode = socket.data.roomCode;
+  socket.on("select-answer", ({ selected, roomCode }) => {
     const room = rooms[roomCode];
+    if (!room) return;
+
     const player = room.users.find((u) => u.sId === socket.id);
+    if (!player) return;
 
     if (!player.answers) {
       player.answers = {};
     }
 
+    // Use currentIndex or default to 0
     const index = player.currentIndex || 0;
+
+    // Store the selected answer under the current question index
     player.answers[index] = { answer: selected };
 
+    // Send confirmation back to this player
     socket.emit("answer-selected", {
       answers: player.answers,
     });
 
-    // ინდივიდუალური ფაზის შეცვლა
+    // 🔁 Increment currentIndex to move to the next question
+    player.currentIndex = index + 1;
+
+    // 🧍 Individual phase update (waiting for others)
     const playerFinished =
       Object.keys(player.answers).length === room.quiz.length;
     if (playerFinished) {
@@ -360,7 +369,7 @@ io.on("connection", (socket) => {
       });
     }
 
-    // ✅ ყველა დასრულების შემოწმება
+    // ✅ Global completion check
     const allFinished = room.users.every(
       (u) => Object.keys(u.answers).length === room.quiz.length
     );
@@ -371,6 +380,7 @@ io.on("connection", (socket) => {
       });
     }
   });
+  
   
 });
 

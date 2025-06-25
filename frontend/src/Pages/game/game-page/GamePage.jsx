@@ -7,6 +7,7 @@ import { AuthContext } from "../../../lib/AuthContext"
 import axiosInstance from "../../../lib/axiosInstance"
 import StartedQuiz from "../started-quiz/StartedQuiz"
 import LeaderBoard from "../leader-board-page/LeaderBoard"
+import QuizFinish from "../quiz-finish/QuizFinish"
 
 function GamePage() {
   const { user, isLoading } = useContext(AuthContext)
@@ -138,9 +139,10 @@ function GamePage() {
     return <div className="container">Loading...</div>
   }
 
-  if (phase === "gameOngoing") return <StartedQuiz />
+  if (phase === "gameOngoing")
+    return <StartedQuiz selectedQuiz={selectedQuiz} roomCode={roomCode} />
   if (phase === "gameOver") return <LeaderBoard />
-
+  if (phase === "waitingForOthers") return <QuizFinish />
   return (
     <div className="container">
       <Link to="/" className="home-link" onClick={handleLeave}>

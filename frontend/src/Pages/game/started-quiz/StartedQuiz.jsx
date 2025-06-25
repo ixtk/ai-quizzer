@@ -5,7 +5,7 @@ import "./StartedQuiz.css"
 import { socket } from "../../../lib/socket"
 import questionsData from "../../../mock-data/questions.json"
 
-function StartedQuiz() {
+function StartedQuiz({ roomCode, selectedQuiz }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState(null)
 
@@ -28,7 +28,7 @@ function StartedQuiz() {
           return next
         } else {
           console.log("🎉 Quiz complete")
-          return index // don’t go past the last
+          return index
         }
       })
 
@@ -38,13 +38,13 @@ function StartedQuiz() {
     socket.on("answer-selected", handleAnswerSelected)
     return () => socket.off("answer-selected", handleAnswerSelected)
   }, [])
-  
 
   const handleSubmit = () => {
     if (!selectedAnswer) return
 
     socket.emit("select-answer", {
-      selected: selectedAnswer
+      selected: selectedAnswer,
+      roomCode
     })
   }
 
@@ -105,7 +105,6 @@ function StartedQuiz() {
               className="btn btn-primary sq-btn-submit"
               onClick={() => {
                 handleSubmit()
-                handleNext()
               }}
               disabled={!selectedAnswer}
             >
