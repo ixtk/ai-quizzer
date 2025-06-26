@@ -102,7 +102,9 @@ function Layout() {
                     </span>
                   </Link>
                 </div>
-                <button className="create-quiz-btn">+ Create Quiz</button>
+                <Link to="/generateQuiz" className="profile-link">
+                  <button className="create-quiz-btn">+ Create Quiz</button>
+                </Link>
                 <div className="logout-div" onClick={handleLogout}>
                   Logout <LogOut className="logout-icon" size={24} />
                 </div>
