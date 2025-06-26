@@ -115,18 +115,7 @@ function Layout() {
                   />
                   Google
                 </button>
-
-                <button
-                  className="btn btn-secondary fb-btn"
-                  onClick={() => handleLogin(facebookProvider)}
-                >
-                  <img
-                    src="/facebook-logo.png"
-                    alt="Facebook"
-                    className="auth-icon"
-                  />
-                  Facebook
-                </button>
+                {/* btn btn-secondary fb-btn */}
               </div>
             </>
           )}

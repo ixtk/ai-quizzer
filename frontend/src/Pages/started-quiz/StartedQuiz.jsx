@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Clock } from "lucide-react"
 import "../../App.css"
 import "./StartedQuiz.css"
-import questionsData from "../../mock-data/questions.json"
+import questionsData from "../../../mock-data/questions.json"
 
 function StartedQuiz() {
   const [current, setCurrent] = useState(0)

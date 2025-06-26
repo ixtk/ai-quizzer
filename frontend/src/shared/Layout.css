@@ -37,21 +37,12 @@
     border-radius: var(--border-radius);
     background-color: rgb(255, 98, 0);
   }
-  .fb-btn {
-    font-size: 1rem;
-    font: inherit;
-    color: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--border-radius);
-    background-color: rgb(51, 83, 163);
-  }
   .auth-icon {
     width: 30px;
     height: 30px;
     margin-right: 0.5rem;
   }
-  .google-btn,
-  .fb-btn {
+  .google-btn {
     display: flex;
     align-items: center;
     justify-content: center;
