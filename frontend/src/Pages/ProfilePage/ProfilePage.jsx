@@ -1,14 +1,21 @@
 import "./ProfilePage.css"
 import quizzes from "../../mock-data/ProfileQuizzes.json"
-import { PlusCircle, Trash2 } from "lucide-react"
-import { useNavigate, Link } from "react-router"
-// import { useContext } from "react"
-// import { AuthContext } from "../../lib/AuthContext"
-// import { socket } from "../../lib/socket"
+import { PlusCircle, Play, Pencil, Trash2 } from "lucide-react"
+import { useNavigate } from "react-router"
+import { useContext } from "react"
+import { AuthContext } from "../../lib/AuthContext"
 import axiosInstance from "../../lib/axiosInstance"
 
 function ProfilePage() {
   const navigate = useNavigate()
+  const { user } = useContext(AuthContext)
+
+  const handleHostGame = async () => {
+    const res = await axiosInstance.post("/create-room")
+    const roomCode = res.data.roomCode
+
+    navigate(`/game/${roomCode}`, { state: { isHost: true } })
+  }
 
   return (
     <div className="container">

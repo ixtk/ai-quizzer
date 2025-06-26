@@ -26,7 +26,13 @@ function GenerateQuiz() {
 
       const data = res.data
       if (Array.isArray(data)) {
-        const withIds = data.map((q, i) => ({ id: i + 1, ...q }))
+        const withIds = data.map((q, i) => ({
+          id: i + 1,
+          ...q,
+          options: q.options.map(opt =>
+            typeof opt === "string" ? { text: opt } : opt
+          )
+        }))
         setQuestions(withIds)
       } else {
         alert("Quiz format error.")
@@ -36,6 +42,7 @@ function GenerateQuiz() {
       alert("Failed to generate quiz.")
     }
   }
+  
 
   const saveQuiz = async () => {
     try {
@@ -43,9 +50,14 @@ function GenerateQuiz() {
       const user = auth.currentUser
       if (!user) return alert("You must be logged in to save quizzes")
 
+      const cleaned = questions.map(({ id, ...q }) => ({
+        ...q,
+        options: q.options.map(opt => opt.text) // ⬅️ flatten here
+      }))
+
       const res = await axiosInstance.post("/save-quiz", {
         title: topic || "Untitled Quiz",
-        questions
+        questions: cleaned
       })
 
       if (res.status === 200) {
@@ -59,6 +71,7 @@ function GenerateQuiz() {
       alert("Error saving quiz")
     }
   }
+  
 
   return (
     <div className="container">
