@@ -2,8 +2,13 @@ import { createContext, useEffect, useState } from "react"
 import { auth } from "../lib/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 import axiosInstance from "../lib/axiosInstance"
+import { useContext } from "react"
 
 export const AuthContext = createContext()
+
+export function useAuth() {
+  return useContext(AuthContext)
+}
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState(null)

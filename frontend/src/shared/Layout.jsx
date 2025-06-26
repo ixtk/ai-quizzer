@@ -1,10 +1,10 @@
 import "./Layout.css"
-import { Outlet } from "react-router"
+import { Outlet, Link } from "react-router"
 import { Brain, LogOut } from "lucide-react"
 import { auth } from "../lib/firebase"
+
 import {
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
   signOut
 } from "firebase/auth"
@@ -13,7 +13,6 @@ import { useContext } from "react"
 import { AuthContext } from "../lib/AuthContext"
 
 const googleProvider = new GoogleAuthProvider()
-const facebookProvider = new FacebookAuthProvider()
 
 function Layout() {
   const { user, setUser } = useContext(AuthContext)
@@ -59,18 +58,22 @@ function Layout() {
     <>
       <header className="header-section container">
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-          <div className="icon-wrapper wrapper-small">
-            <Brain size={28} color="white" />
-          </div>
-          <p
-            style={{
-              color: "var(--purple-700)",
-              fontSize: "1.2rem",
-              fontWeight: "500"
-            }}
-          >
-            AI Multiplayer Quizzer
-          </p>
+          <Link to="/">
+            <div className="icon-wrapper wrapper-small">
+              <Brain size={28} color="white" />
+            </div>
+          </Link>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <p
+              style={{
+                color: "var(--purple-700)",
+                fontSize: "1.2rem",
+                fontWeight: "500"
+              }}
+            >
+              AI Multiplayer Quizzer
+            </p>
+          </Link>
         </div>
 
         <div className="header-actions">
@@ -79,23 +82,27 @@ function Layout() {
               <div className="header-div">
                 <div style={{ display: "flex" }}>
                   {user?.photoURL && (
-                    <img
-                      src={user.photoURL}
-                      alt="User avatar"
-                      style={{
-                        width: "32px",
-                        height: "32px",
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                        marginRight: "1rem"
-                      }}
-                    />
+                    <Link to="/profile" className="profile-link">
+                      <img
+                        src={user.photoURL}
+                        alt="User avatar"
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          marginRight: "1rem"
+                        }}
+                      />
+                    </Link>
                   )}
-
-                  <span className="profile-txt">
-                    {user?.displayName || "Profile"}
-                  </span>
+                  <Link to="/profile" className="profile-link">
+                    <span className="profile-txt">
+                      {user?.displayName || "Profile"}
+                    </span>
+                  </Link>
                 </div>
+                <button className="create-quiz-btn">+ Create Quiz</button>
                 <div className="logout-div" onClick={handleLogout}>
                   Logout <LogOut className="logout-icon" size={24} />
                 </div>
@@ -115,7 +122,6 @@ function Layout() {
                   />
                   Google
                 </button>
-                {/* btn btn-secondary fb-btn */}
               </div>
             </>
           )}
