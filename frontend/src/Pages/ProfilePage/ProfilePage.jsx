@@ -31,7 +31,43 @@ function ProfilePage() {
         </div>
 
         <div className="quizzes">
-          {/* Additional code for quizzes will go here */}
+          {/* lost during merge conflict */}
+          <div className="my-quizzes">
+            <h1>My Quizzes</h1>
+            <button className="quizzes-create-btn btn-primary btn">
+              <PlusCircle size={20} style={{ marginRight: 6 }} />
+              Create New Quiz
+            </button>
+          </div>
+
+          {quizzes.map((quiz, index) => (
+            <div className="quiz card" key={index}>
+              <div className="quiz-info-name">
+                <p className="quiz-name">{quiz.name}</p>
+                <div className="quiz-info">
+                  <p>{quiz.number_of_questions} questions</p>
+                  <p>Difficulty: {quiz.difficulty}</p>
+                  <p className="quiz-info-created">
+                    Created: {quiz.date_created}
+                  </p>
+                </div>
+              </div>
+              <div className="quiz-actions">
+                <button className="btn-primary btn" onClick={handleHostGame}>
+                  <Play size={16} />
+                  <span className="btn-text">Host Game</span>
+                </button>
+                <button className="btn-outline btn">
+                  <Pencil size={16} />
+                  <span className="btn-text">Edit</span>
+                </button>
+                <button className="btn-outline btn">
+                  <Trash2 size={16} />
+                  <span className="btn-text">Delete</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

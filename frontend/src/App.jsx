@@ -15,9 +15,11 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="/game/:roomCode" element={<GamePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/generateQuiz" element={<GenerateQuiz />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/game/:roomCode" element={<LobbyPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/generateQuiz" element={<GenerateQuiz />} />
+        </Route>
       </Route>
     </Routes>
   )
